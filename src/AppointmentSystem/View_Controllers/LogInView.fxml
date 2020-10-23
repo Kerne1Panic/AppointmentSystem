@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppointmentSystem.View_Controllers.LogInController">
+   <children>
+      <BorderPane layoutY="-2.0" prefHeight="321.0" prefWidth="565.0">
+         <left>
+            <Pane prefHeight="200.0" prefWidth="30.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Pane prefHeight="233.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <Pane prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+         </bottom>
+         <top>
+            <Pane prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane prefHeight="100.0" prefWidth="600.0">
+                     <children>
+                        <Label fx:id="titleLabel" alignment="CENTER" prefHeight="72.0" prefWidth="460.0">
+                           <font>
+                              <Font name="Arial Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <VBox prefHeight="213.0" prefWidth="401.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="401.0">
+                     <children>
+                        <Label fx:id="usernameLabel" prefHeight="28.0" prefWidth="175.0" />
+                        <TextField fx:id="usernameText" onAction="#logIn" prefHeight="27.0" prefWidth="225.0" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="401.0">
+                     <children>
+                        <Label fx:id="passwordLabel" prefHeight="29.0" prefWidth="179.0" />
+                        <PasswordField fx:id="usernamePassword" onAction="#logIn" prefHeight="27.0" prefWidth="221.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
