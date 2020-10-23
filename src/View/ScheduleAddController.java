@@ -139,7 +139,6 @@ public class ScheduleAddController implements Initializable {
     @FXML
     void saveButton(ActionEvent event)
     {
-
     }
 
 }
