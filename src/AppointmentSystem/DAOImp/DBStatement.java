@@ -1,4 +1,4 @@
-package AppointmentSystem.DAO;
+package AppointmentSystem.DAOImp;
 
 import java.sql.Connection;
 import java.sql.SQLException;

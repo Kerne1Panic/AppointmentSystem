@@ -1,6 +1,6 @@
 package AppointmentSystem;
 
-import AppointmentSystem.DAO.DBConnection;
+import AppointmentSystem.Utilities.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

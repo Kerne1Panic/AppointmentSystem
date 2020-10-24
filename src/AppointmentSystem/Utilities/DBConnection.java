@@ -1,4 +1,4 @@
-package AppointmentSystem.DAO;
+package AppointmentSystem.Utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

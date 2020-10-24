@@ -43,14 +43,22 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="401.0">
                      <children>
-                        <Label fx:id="usernameLabel" prefHeight="28.0" prefWidth="175.0" />
+                        <AnchorPane prefHeight="67.0" prefWidth="180.0">
+                           <children>
+                              <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="171.0" />
+                           </children>
+                        </AnchorPane>
                         <TextField fx:id="usernameText" onAction="#logIn" prefHeight="27.0" prefWidth="225.0" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="401.0">
                      <children>
-                        <Label fx:id="passwordLabel" prefHeight="29.0" prefWidth="179.0" />
-                        <PasswordField fx:id="usernamePassword" onAction="#logIn" prefHeight="27.0" prefWidth="221.0" />
+                        <AnchorPane prefHeight="67.0" prefWidth="182.0">
+                           <children>
+                              <Label fx:id="passwordLabel" alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="171.0" />
+                           </children>
+                        </AnchorPane>
+                        <PasswordField fx:id="usernamePassword" onAction="#logIn" prefHeight="27.0" prefWidth="230.0" />
                      </children>
                   </HBox>
                </children>
