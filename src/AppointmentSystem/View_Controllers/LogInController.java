@@ -1,5 +1,6 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.UsersImp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -36,8 +38,6 @@ public class LogInController implements Initializable {
     @FXML
     private PasswordField usernamePassword;
 
-    private String password = "admin";
-    private String username = "admin";
     Alert alert = new Alert(Alert.AlertType.ERROR, bundle.getString("WrongCredentials"));
 
     /**
@@ -53,6 +53,8 @@ public class LogInController implements Initializable {
         titleLabel.setText(bundle.getString("LoginScreen"));
     }
 
+    String username = "test";
+    String password = "test";
     /**
      * This method is used to verify that the credentials are correct otherwise an error message is displayed.
      * A new stage is then set, changing the view to the Main menu.

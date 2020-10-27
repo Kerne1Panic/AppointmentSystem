@@ -19,11 +19,11 @@ public class DBConnection {
 
     //mySQL JDBC Driver and Connection Interface reference
     private static final String MYSQLJDBCDriver = "com.mysql.jdbc.Driver";
-    private static Connection connect = null;
+    static Connection connect;
 
     //username and password
     private static final String username = "U07n6C";
-    private static String password = "53689078158";
+    private static final String password = "53689078158";
 
     /**
      * This method establishes the connection, using a try catch for exception handling.

@@ -1,13 +1,14 @@
 package AppointmentSystem;
 
+import AppointmentSystem.DAOImp.UsersImp;
 import AppointmentSystem.Utilities.DBConnection;
+import AppointmentSystem.Utilities.QueryUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Locale;
 
@@ -35,7 +36,7 @@ public class AppointmentSystemApp extends Application {
      * @throws SQLException
      */
     public static void main(String[] args) throws SQLException {
-        Connection connection = DBConnection.startConnection();
+        DBConnection.startConnection();
         //This line sets the default language to french so that the program does not need to restart to change the language.
         //Locale.setDefault(new Locale("fr"));
 
@@ -49,6 +50,7 @@ public class AppointmentSystemApp extends Application {
             exit(0);
 
         } else {
+
             launch(args);
         }
 

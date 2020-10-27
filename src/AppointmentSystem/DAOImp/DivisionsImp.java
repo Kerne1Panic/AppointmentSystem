@@ -9,10 +9,6 @@ public class DivisionsImp implements DivisionsInt {
 
     public ObservableList<Divisions> divisions = FXCollections.observableArrayList();
 
-    public DivisionsImp(ObservableList<Divisions> divisions) {
-        this.divisions = divisions;
-    }
-
     @Override
     public ObservableList<Divisions> getAllDivisions() {
         return null;
