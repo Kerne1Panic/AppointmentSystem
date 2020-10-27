@@ -1,5 +1,8 @@
 package AppointmentSystem.Model;
 
+import AppointmentSystem.DAOImp.CustomersImp;
+import javafx.collections.ObservableList;
+
 import java.time.ZonedDateTime;
 
 public class Customers {
@@ -17,6 +20,7 @@ public class Customers {
 
     //This is the Foreign key from the Division Table
     private int divisionId;
+
 
     public Customers(int customerId, String customerName, String address, String postalCode, String phone, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
         this.customerId = customerId;

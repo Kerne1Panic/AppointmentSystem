@@ -1,6 +1,7 @@
 package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +23,12 @@ import java.util.ResourceBundle;
 
 /**
  * @author josealvarezpulido
+ * Contoller for the login screen, the initial screen launched from the main method.
+ * Uses labels, text fields, and password fileds.
+ * An alert message is created if the login credentials do not match the username and password from the database.
  */
 public class LogInController implements Initializable {
-        //Resource Bundle used for changing languages
+    //Resource Bundle used for changing languages
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
     @FXML
@@ -37,11 +41,11 @@ public class LogInController implements Initializable {
     private TextField usernameText;
     @FXML
     private PasswordField usernamePassword;
-
+    //Alert message using keys from the resource bundle to translate the error message.
     Alert alert = new Alert(Alert.AlertType.ERROR, bundle.getString("WrongCredentials"));
 
     /**
-     *
+     * Labels are initialized using a key from the resource bundle to translate them.
      * @param url
      * @param resourceBundle
      */
@@ -52,26 +56,38 @@ public class LogInController implements Initializable {
         passwordLabel.setText(bundle.getString("Password")+":");
         titleLabel.setText(bundle.getString("LoginScreen"));
     }
-
-    String username = "test";
-    String password = "test";
     /**
-     * This method is used to verify that the credentials are correct otherwise an error message is displayed.
+     * The Username text is matched against the usernames in the database, if there is a match the passwords are compared.
      * A new stage is then set, changing the view to the Main menu.
-     * @param event when the enter button is pressed on either text field or password field.
+     * A try catch is used to catch exceptions of wrong or null usernames typed by the user.
+     * @param event when the enter button is pressed on either text field or password field executing the method.
      */
-    public void logIn(ActionEvent event) throws IOException
-    {
-            if(usernamePassword.getText().equals(password) && usernameText.getText().equals(username))
-            {
-                Parent mainMenuParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/MainMenuView.fxml"));
-                Scene mainMenuScene = new Scene(mainMenuParent);
-                Stage mainMenu = (Stage)((Node)event.getSource()).getScene().getWindow();
-                mainMenu.setScene(mainMenuScene);
-                mainMenu.show();
+    public void logIn(ActionEvent event) throws IOException, SQLException {
+        //try catch is used to prevent crashing based on human error.
+        try{
+            //Users Object created using the getUser(String sql) static function from a matched user in the database.
+            Users user = UsersImp.getUser(usernameText.getText());
+            //not null user input check.
+            if(user != null){
+                //comparing the user names to the ones in the database, case sensitive.
+                if(user.getPassword().equals(usernamePassword.getText())){
+                    Parent mainMenuParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/MainMenuView.fxml"));
+                    Scene mainMenuScene = new Scene(mainMenuParent);
+                    Stage mainMenu = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    mainMenu.setScene(mainMenuScene);
+                    mainMenu.show();
+                }
+                else {
+                    //alert displayed if no usernames are matched.
+                    alert.showAndWait();
+                }
             }
-            else{
+            else {
+                //alert is displayed if text field is left null.
                 alert.showAndWait();
             }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

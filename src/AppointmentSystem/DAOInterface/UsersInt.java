@@ -9,10 +9,21 @@ import java.sql.SQLException;
  * @author josealvarezpulido
  */
 public interface UsersInt {
-    public ObservableList<Users> getAllUsers();
-    public void updateUsers();
-    public void deleteUsers();
-    public void addUsers();
+    static ObservableList<Users> getAllUsers() {
+        return null;
+    }
+
+    static void updateUsers() {
+
+    }
+
+    static void deleteUsers() {
+
+    }
+
+    static void addUsers() {
+
+    }
 
     static Users getUser(String username) throws SQLException {
         return null;

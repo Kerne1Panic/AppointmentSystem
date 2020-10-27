@@ -7,8 +7,19 @@ import javafx.collections.ObservableList;
  * @author josealvarezpulido
  */
 public interface CustomersInt {
-    public ObservableList<Customers> getAllCustomers();
-    public void updateCustomers();
-    public void deleteCustomers();
-    public void addCustomers();
+    static ObservableList<Customers> getAllCustomers() {
+        return null;
+    }
+
+    static void updateCustomers() {
+
+    }
+
+    static void deleteCustomers() {
+
+    }
+
+    static void addCustomers() {
+
+    }
 }

@@ -19,6 +19,7 @@ public class DBConnection {
 
     //mySQL JDBC Driver and Connection Interface reference
     private static final String MYSQLJDBCDriver = "com.mysql.jdbc.Driver";
+    //connect is made as a static attribute so that it only needs to be created once, since the connection is not needed to change.
     static Connection connect;
 
     //username and password
@@ -26,7 +27,7 @@ public class DBConnection {
     private static final String password = "53689078158";
 
     /**
-     * This method establishes the connection, using a try catch for exception handling.
+     * This method establishes the connection jdbc driver, using a try catch for exception handling.
      * It uses a Class.forName to get the Driver. Casting a  jdbc.Connection type to the sql.DriverManager to return the connection.
      * The DriverManager is used to get a connection to the database using the jdbc url, the username, and password.
      *
@@ -36,8 +37,10 @@ public class DBConnection {
      */
     public static Connection startConnection()
     {
+        //try catch used to catch Classes that are not found or not defined.
         try
         {
+            //try catch needed incase class not found.
             Class.forName(MYSQLJDBCDriver);
             connect = (Connection) DriverManager.getConnection(jdbcURL, username, password);
 
@@ -52,11 +55,12 @@ public class DBConnection {
     }
 
     /**
-     * This method closes the connection to the database. The connection is closed using conn.close().
+     * This method closes the connection to the database using the defined Connection object, no params or returns are needed.. The connection is closed using conn.close().
      * A try Catch block is used for exception handling.
      */
     public static void closeConnection()
     {
+        //try catch used to catch SQL exceptions.
         try
         {
             connect.close();

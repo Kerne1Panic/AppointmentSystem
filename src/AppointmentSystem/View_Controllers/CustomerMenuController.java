@@ -1,5 +1,7 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.CustomersImp;
+import AppointmentSystem.Model.Customers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -27,28 +31,28 @@ public class CustomerMenuController implements Initializable {
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat",Locale.getDefault());
 
     @FXML
-    private TableView<?> customerTable;
+    private TableView<Customers> customerTable;
 
     @FXML
-    private TableColumn<?, ?> customerIdCol;
+    private TableColumn<Customers, Integer> customerIdCol;
 
     @FXML
-    private TableColumn<?, ?> nameCol;
+    private TableColumn<Customers, String> nameCol;
 
     @FXML
-    private TableColumn<?, ?> addressCol;
+    private TableColumn<Customers, String> addressCol;
 
     @FXML
-    private TableColumn<?, ?> postalCol;
+    private TableColumn<Customers,String> postalCol;
 
     @FXML
-    private TableColumn<?,?> phoneCol;
+    private TableColumn<Customers, String> phoneCol;
 
     @FXML
-    private TableColumn<?, ?> createdCol;
+    private TableColumn<Customers, ZonedDateTime> createdCol;
 
     @FXML
-    private TableColumn<?, ?> updatedCol;
+    private TableColumn<Customers,ZonedDateTime> updatedCol;
 
     @FXML
     private Label titleLabel;
@@ -74,6 +78,17 @@ public class CustomerMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        //setting Property values to the columns
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        createdCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+        updatedCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+
+        //
+        customerTable.setItems(CustomersImp.getAllCustomers());
         //Title Text
         titleLabel.setText(bundle.getString("CustomerMenu"));
         //Button Text
@@ -89,10 +104,6 @@ public class CustomerMenuController implements Initializable {
         phoneCol.setText(bundle.getString("Phone"));
         createdCol.setText(bundle.getString("Created"));
         updatedCol.setText(bundle.getString("Updated"));
-
-
-
-
 
     }
     /**
