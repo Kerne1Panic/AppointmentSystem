@@ -180,6 +180,7 @@ public class CustomerUpdateController implements Initializable {
                 }
             }
             divisionCombo.setItems(filteredDivisions);
+            divisionCombo.setValue(null);
         }
     }
 
@@ -209,23 +210,29 @@ public class CustomerUpdateController implements Initializable {
         String postalCode = postalField.getText();
         String phone = phoneField.getText();
         String updatedBy = UsersImp.getUserLoggedIn();
-        int division = divisionCombo.getValue().getDivisionId();
-        if(nameField.getText() != null && addressField.getText() != null && postalField.getText() != null && phoneField.getText() != null && divisionCombo.getValue() != null && countryCombo.getValue() != null){
-            if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId())
+        try{
+            if(!nameField.getText().isBlank() && !addressField.getText().isBlank() && !postalField.getText().isBlank() && !phoneField.getText().isBlank() && divisionCombo.getValue() != null)
             {
-                CustomersImp.updateCustomers(name, address,postalCode,phone,division,customerId);
+                if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId())
+                {
+                    int division = divisionCombo.getValue().getDivisionId();
+                    CustomersImp.updateCustomers(name, address,postalCode,phone,division,customerId);
 
-                Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
-                Scene cancelScene = new Scene(cancelParent);
-                Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                cancelStage.setScene(cancelScene);
-                cancelStage.show();
+                    Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
+                    Scene cancelScene = new Scene(cancelParent);
+                    Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    cancelStage.setScene(cancelScene);
+                    cancelStage.show();
+                }
+                else{
+                    System.out.println("Country Division miss match");
+                }
             }
             else{
-                System.out.println("Country Division miss match");
+                System.out.println("Missing values");
             }
-
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
         }
     }
-
 }

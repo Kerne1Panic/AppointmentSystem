@@ -115,6 +115,7 @@ public class CustomerAddController implements Initializable {
                 }
             }
             divisionCombo.setItems(filteredDivisions);
+            divisionCombo.setValue(null);
         }
     }
     /**
@@ -137,14 +138,14 @@ public class CustomerAddController implements Initializable {
      */
     @FXML
     void saveButton(ActionEvent event) {
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String postalCode = postalField.getText();
+        String phone = phoneField.getText();
         try {
-            String name = nameField.getText();
-            String address = addressField.getText();
-            String postalCode = postalField.getText();
-            String phone = phoneField.getText();
-            int divisionId = divisionCombo.getValue().getDivisionId();
-            if(nameField.getText() != null && addressField.getText() != null && divisionCombo.getValue() != null && countryCombo.getValue() != null && postalField.getText() != null && phoneField.getText() != null){
+            if(!nameField.getText().isBlank() && !addressField.getText().isBlank() && divisionCombo.getValue() != null && !postalField.getText().isBlank() && !phoneField.getText().isBlank()){
                 if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId()) {
+                    int divisionId = divisionCombo.getValue().getDivisionId();
                     CustomersImp.addCustomers(name, address, postalCode, phone, divisionId);
 
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
@@ -157,10 +158,13 @@ public class CustomerAddController implements Initializable {
                     System.out.println("Country Division miss match");
                 }
             }
+            else {
+                System.out.println("Missing Values");
+            }
 
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Error: "+e.getMessage());
         }
 
     }
