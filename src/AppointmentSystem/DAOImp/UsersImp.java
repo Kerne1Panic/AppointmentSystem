@@ -23,7 +23,10 @@ public class UsersImp implements UsersInt {
 
     //static attribute used to store the extracted and created Objects of the Users class.
     static ObservableList<Users> users = FXCollections.observableArrayList();
-    //Used to determine which user is logged in
+    /**
+     * userLoggedIn is set in the LogInView using the LogInController inside the LogIn actionEvent.
+     * Used to keep track of which user is logged in to the System.
+     */
     private static String userLoggedIn;
 
     /**
@@ -67,10 +70,18 @@ public class UsersImp implements UsersInt {
         return users;
     }
 
-
-    public static void setUserLoggedIn(String user){
-        userLoggedIn = user;
+    /**
+     * Sets the private static attribute userLoggedIn.
+     * @param username is used to set the userLoggedIn attribute.
+     */
+    public static void setUserLoggedIn(String username){
+        userLoggedIn = username;
     }
+
+    /**
+     * gets the userLoggedIn private static attribute.
+     * @return userLoggedIn
+     */
     public static String getUserLoggedIn(){
         return userLoggedIn;
     }
@@ -128,6 +139,5 @@ public class UsersImp implements UsersInt {
      * @param newUser is the User that is being added.
      */
     public void addUsers(Users newUser) {
-        users.add(newUser);
     }
 }

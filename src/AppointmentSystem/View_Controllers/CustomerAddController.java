@@ -1,10 +1,10 @@
 package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.CountriesImp;
+import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.DivisionsImp;
 import AppointmentSystem.Model.Countries;
 import AppointmentSystem.Model.Divisions;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -99,21 +99,17 @@ public class CustomerAddController implements Initializable {
         cancelButtonText.setText(bundle.getString("Cancel"));
         //After Selecting the Country a list of the Divisions for that country are allowed to be selected in Division combo box
         countryCombo.setItems(CountriesImp.getAllCountries());
-
-
-
-
     }
 
     /**
      * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
      */
     public void CountryComboSelect(){
-        ObservableList<Divisions> divisions = DivisionsImp.getAllDivisions();
+        ObservableList<Divisions> divisionsList = DivisionsImp.getAllDivisions();
         ObservableList<Divisions> filteredDivisions = FXCollections.observableArrayList();
         if (countryCombo.getValue() != null){
             int countryId = countryCombo.getValue().getCountryId();
-            for(Divisions division : divisions){
+            for(Divisions division : divisionsList){
                 if(division.getCountryId() == countryId){
                     filteredDivisions.add(division);
                 }
@@ -141,6 +137,31 @@ public class CustomerAddController implements Initializable {
      */
     @FXML
     void saveButton(ActionEvent event) {
+        try {
+            String name = nameField.getText();
+            String address = addressField.getText();
+            String postalCode = postalField.getText();
+            String phone = phoneField.getText();
+            int divisionId = divisionCombo.getValue().getDivisionId();
+            if(nameField.getText() != null && addressField.getText() != null && divisionCombo.getValue() != null && countryCombo.getValue() != null && postalField.getText() != null && phoneField.getText() != null){
+                if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId()) {
+                    CustomersImp.addCustomers(name, address, postalCode, phone, divisionId);
+
+                    Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
+                    Scene cancelScene = new Scene(cancelParent);
+                    Stage cancelStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    cancelStage.setScene(cancelScene);
+                    cancelStage.show();
+                }
+                else {
+                    System.out.println("Country Division miss match");
+                }
+            }
+
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
     }
 }

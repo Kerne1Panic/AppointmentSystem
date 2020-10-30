@@ -22,7 +22,7 @@
         <TextField fx:id="addressField" layoutX="115.0" layoutY="130.0" />
         <TextField fx:id="postalField" layoutX="115.0" layoutY="170.0" />
         <TextField fx:id="phoneField" layoutX="115.0" layoutY="210.0" />
-        <ComboBox fx:id="countryCombo" layoutX="385.0" layoutY="130.0" prefWidth="150.0" />
+        <ComboBox fx:id="countryCombo" layoutX="385.0" layoutY="130.0" onAction="#CountryComboSelect" prefWidth="150.0" />
         <ComboBox fx:id="divisionCombo" layoutX="385.0" layoutY="170.0" prefWidth="150.0" />
         <Label fx:id="countryLabel" alignment="CENTER_RIGHT" layoutX="293.0" layoutY="135.0" prefHeight="17.0" prefWidth="81.0" text="Country" />
         <Label fx:id="divisionLabel" alignment="CENTER_RIGHT" layoutX="293.0" layoutY="175.0" prefHeight="17.0" prefWidth="81.0" text="Division" />

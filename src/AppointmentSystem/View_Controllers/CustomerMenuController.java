@@ -130,7 +130,13 @@ public class CustomerMenuController implements Initializable {
     @FXML
     void removeCustomerButton(ActionEvent event)
     {
-
+        if(customerTable.getSelectionModel().getSelectedItem() != null)
+        {
+            int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
+            CustomersImp.deleteCustomers(customerId);
+            //customer table, set by getAllCustomers. refreshes the Table.
+            customerTable.setItems(CustomersImp.getAllCustomers());
+        }
     }
 
 
@@ -142,11 +148,21 @@ public class CustomerMenuController implements Initializable {
     @FXML
     void updateCustomerButton(ActionEvent event) throws IOException
     {
-        Parent updateParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerUpdateView.fxml"));
-        Scene updateScene = new Scene(updateParent);
-        Stage updateStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        updateStage.setScene(updateScene);
-        updateStage.show();
+        if(customerTable.getSelectionModel().getSelectedItem() != null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerUpdateView.fxml"));
+            loader.load();
+            CustomerUpdateController controller = loader.getController();
+            Customers customersSent = customerTable.getSelectionModel().getSelectedItem();
+
+            controller.CustomerSent(customersSent);
+            Parent update = loader.getRoot();
+            Stage updateStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene updateScene = new Scene(update);
+            updateStage.setScene(updateScene);
+            updateStage.show();
+        }
+
     }
 
     /**

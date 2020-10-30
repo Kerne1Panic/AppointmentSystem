@@ -7,13 +7,11 @@ import AppointmentSystem.Utilities.TimeUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-
+import java.sql.Time;
+import java.time.*;
 
 
 /**
@@ -62,13 +60,38 @@ public class CustomersImp implements CustomersInt {
     }
 
 
-    public static void updateCustomers() {
+    public static void updateCustomers(String name,String address,String postalCode,String phone,int divisionId, int customerId) {
+        String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = Current_Timestamp, last_Updated_By = ? , Division_ID  = ? WHERE Customer_ID = ?";
+        try {
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setString(1,name);
+            ps.setString(2,address);
+            ps.setString(3,postalCode);
+            ps.setString(4,phone);
+            ps.setString(5,UsersImp.getUserLoggedIn());
+            ps.setInt(6,divisionId);
+            ps.setInt(7,customerId);
 
+            ps.execute();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
 
-    public static void deleteCustomers() {
-
+    public static void deleteCustomers(int customerID)
+    {
+        String sqlStatement = "DELETE FROM customers WHERE Customer_ID = ?";
+        try{
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setInt(1,customerID);
+            ps.execute();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -80,8 +103,19 @@ public class CustomersImp implements CustomersInt {
      * @param divisionId
      */
     public static void addCustomers(String name, String address, String postalCode, String phone, int divisionId) {
-        String sqlStatement = "INSERT INTO customers(Customer_Name,Address,Postal_Code,Phone,";
+        String sqlStatement = "INSERT INTO customers(Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Division_ID)" +
+                "VALUES(?,?,?,?,CURRENT_TIMESTAMP,?,?)";
         try{
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setString(1,name);
+            ps.setString(2,address);
+            ps.setString(3,postalCode);
+            ps.setString(4,phone);
+            ps.setString(5,UsersImp.getUserLoggedIn());
+            ps.setInt(6,divisionId);
+
+            ps.execute();
 
         }catch(Exception e){
             System.out.println(e.getMessage());
