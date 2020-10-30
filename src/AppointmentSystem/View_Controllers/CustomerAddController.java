@@ -1,5 +1,12 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.CountriesImp;
+import AppointmentSystem.DAOImp.DivisionsImp;
+import AppointmentSystem.Model.Countries;
+import AppointmentSystem.Model.Divisions;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,10 +60,10 @@ public class CustomerAddController implements Initializable {
     private TextField phoneField;
 
     @FXML
-    private ComboBox<?> countryCombo;
+    private ComboBox<Countries> countryCombo;
 
     @FXML
-    private ComboBox<?> divisionCombo;
+    private ComboBox<Divisions> divisionCombo;
 
     @FXML
     private Label countryLabel;
@@ -90,7 +97,29 @@ public class CustomerAddController implements Initializable {
         //Button Text
         saveButtonText.setText(bundle.getString("Save"));
         cancelButtonText.setText(bundle.getString("Cancel"));
+        //After Selecting the Country a list of the Divisions for that country are allowed to be selected in Division combo box
+        countryCombo.setItems(CountriesImp.getAllCountries());
 
+
+
+
+    }
+
+    /**
+     * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
+     */
+    public void CountryComboSelect(){
+        ObservableList<Divisions> divisions = DivisionsImp.getAllDivisions();
+        ObservableList<Divisions> filteredDivisions = FXCollections.observableArrayList();
+        if (countryCombo.getValue() != null){
+            int countryId = countryCombo.getValue().getCountryId();
+            for(Divisions division : divisions){
+                if(division.getCountryId() == countryId){
+                    filteredDivisions.add(division);
+                }
+            }
+            divisionCombo.setItems(filteredDivisions);
+        }
     }
     /**
      * This method is used as an action event for the cancel button, changing the Scene of the Stage.

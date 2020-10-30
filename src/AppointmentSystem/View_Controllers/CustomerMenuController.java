@@ -70,7 +70,8 @@ public class CustomerMenuController implements Initializable {
     private Button cancelButton;
 
     /**
-     *
+     * initializes the labels, column names, and button text, sets Property values for the columns so that they could be receive the data from the database.
+     * The Table is set using the CustomerImp Class' static method getAllCustomers which returns an observable list of the data from the database.
      * @param url
      * @param resourceBundle
      *
@@ -87,7 +88,7 @@ public class CustomerMenuController implements Initializable {
         createdCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
         updatedCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
 
-        //
+        //customer table, set by getAllCustomers.
         customerTable.setItems(CustomersImp.getAllCustomers());
         //Title Text
         titleLabel.setText(bundle.getString("CustomerMenu"));

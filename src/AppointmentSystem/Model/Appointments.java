@@ -5,7 +5,6 @@ import java.time.ZonedDateTime;
 public class Appointments {
     //Primary key for the Appointments table
     private int appointmentId;
-
     private String title;
     private String description;
     private String location;
@@ -16,11 +15,9 @@ public class Appointments {
     private String createdBy;
     private ZonedDateTime lastUpdate;
     private String lastUpdateBy;
-
-    //Foreign Keys
-    private int customerId;
-    private int userId;
-    private int contactId;
+    private int customerId;  //Foreign Key
+    private int userId;    //Foreign Key
+    private int contactId;  //Foreign Key
 
     public Appointments(int appointmentId, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;

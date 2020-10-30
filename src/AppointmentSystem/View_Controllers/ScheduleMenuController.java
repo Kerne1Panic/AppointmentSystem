@@ -1,5 +1,7 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.AppointmentImp;
+import AppointmentSystem.Model.Appointments;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,7 +26,7 @@ public class ScheduleMenuController implements Initializable {
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
     @FXML
-    private TableView<?> appointmentTable;
+    private TableView<Appointments> appointmentTable;
 
     @FXML
     private TableColumn<?, ?> contactCol;
@@ -74,6 +77,8 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     private RadioButton monthlyRadio;
 
+    public ToggleGroup filterGroup;
+
     /**
      *
      * @param url
@@ -103,6 +108,25 @@ public class ScheduleMenuController implements Initializable {
         startCol.setText(bundle.getString("Start"));
         endCol.setText(bundle.getString("End"));
         locationCol.setText(bundle.getString("Location"));
+        //column property values
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        //Toggle group and radio buttons
+        filterGroup = new ToggleGroup();
+        this.noFilterRadio.setToggleGroup(filterGroup);
+        this.monthlyRadio.setToggleGroup(filterGroup);
+        this.weeklyRadio.setToggleGroup(filterGroup);
+        //set Schedule Table
+        appointmentTable.setItems(AppointmentImp.getAllAppointments());
+
+
 
     }
 

@@ -1,10 +1,7 @@
 package AppointmentSystem;
 
-import AppointmentSystem.DAOImp.CustomersImp;
-import AppointmentSystem.Model.Customers;
 import AppointmentSystem.Utilities.DBConnection;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

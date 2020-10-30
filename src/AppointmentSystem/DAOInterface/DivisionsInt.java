@@ -7,8 +7,12 @@ import javafx.collections.ObservableList;
  * @author josealvarezpulido
  */
 public interface DivisionsInt {
-    public ObservableList<Divisions> getAllDivisions();
-    public void updateDivisions();
-    public void deleteDivisions();
-    public void addDivisions();
+
+    static ObservableList<Divisions> getAllDivisions() {
+        return null;
+    }
+
+    void updateDivisions();
+    void deleteDivisions();
+    void addDivisions();
 }

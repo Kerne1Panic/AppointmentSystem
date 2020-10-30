@@ -6,15 +6,15 @@ public class Countries {
     //Primary key from this Table\
     private int countryId;
 
-    private String countryName;
+    private String name;
     private ZonedDateTime createDate;
     private String createdBy;
     private ZonedDateTime lastUpdate;
     private String lastUpdatedBy;
 
-    public Countries(int countryId, String countryName, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy) {
+    public Countries(int countryId, String name, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy) {
         this.countryId = countryId;
-        this.countryName = countryName;
+        this.name = name;
         this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
@@ -29,12 +29,12 @@ public class Countries {
         this.countryId = countryId;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ZonedDateTime getCreateDate() {
@@ -68,4 +68,9 @@ public class Countries {
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
+    @Override
+    public String toString(){
+        return (name);
+    }
 }
+

@@ -17,17 +17,25 @@ import java.time.ZonedDateTime;
 
 /**
  * @author josealvarezpulido
+ * Implements the UsersInt interface, used to perform CRUD operations to the Database data.
  */
 public class UsersImp implements UsersInt {
 
+    //static attribute used to store the extracted and created Objects of the Users class.
+    static ObservableList<Users> users = FXCollections.observableArrayList();
+    //Used to determine which user is logged in
+    private static String userLoggedIn;
 
-    public static ObservableList<Users> users = FXCollections.observableArrayList();
-
+    /**
+     * Reads Data from the database using a PreparedStatement sqlStatement which contains a SELECT SQL command.
+     * uses try catch block to handle a wrong SQL statement, here the statement is final, however in the event of retrieving data from user it would help catch user error.
+     * @return users static attribute used to store the extracted and created Objects of the Users class.
+     */
     public static ObservableList<Users> getAllUsers() {
         if(users != null){
             users.clear();
         }
-        String sqlStatement = "SELECT * FROM users";
+        final String sqlStatement = "SELECT * FROM users";
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -60,6 +68,14 @@ public class UsersImp implements UsersInt {
     }
 
 
+    public static void setUserLoggedIn(String user){
+        userLoggedIn = user;
+    }
+    public static String getUserLoggedIn(){
+        return userLoggedIn;
+    }
+
+
 
     public static void updateUsers() {
 
@@ -69,10 +85,14 @@ public class UsersImp implements UsersInt {
 
     }
 
-
+    /**
+     * Reads Data from the database using a PreparedStatement sqlStatement which contains a SELECT WHERE SQL command to retrieve a specific User_Name.
+     * uses try catch block to handle a wrong SQL statement, here the statement is final, however in the event of retrieving data from user it would help catch user error.
+     * @return userFound local attribute used to store the extract and create the matching User_Name into a Object of the Users class.
+     */
     public static Users getUser(String username) throws SQLException {
         Users userFound;
-        String sqlStatement = "SELECT * FROM users WHERE User_Name ='" + username + "'";
+        final String sqlStatement = "SELECT * FROM users WHERE User_Name ='" + username + "'";
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();

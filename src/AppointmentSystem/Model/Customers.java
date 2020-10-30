@@ -1,8 +1,5 @@
 package AppointmentSystem.Model;
 
-import AppointmentSystem.DAOImp.CustomersImp;
-import javafx.collections.ObservableList;
-
 import java.time.ZonedDateTime;
 
 public class Customers {

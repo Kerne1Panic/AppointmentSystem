@@ -76,6 +76,8 @@ public class LogInController implements Initializable {
                     Stage mainMenu = (Stage)((Node)event.getSource()).getScene().getWindow();
                     mainMenu.setScene(mainMenuScene);
                     mainMenu.show();
+                    //sets the userLoggedIn String. The String is used to determine which user is logged in.
+                    UsersImp.setUserLoggedIn(user.getUserName());
                 }
                 else {
                     //alert displayed if no usernames are matched.

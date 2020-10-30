@@ -7,8 +7,11 @@ import javafx.collections.ObservableList;
  * @author josealvarezpulido
  */
 public interface ContactsInt {
-    public ObservableList<Contacts> getAllContacts();
-    public void updateContacts();
-    public void deleteContacts();
-    public void addContacts();
+    static ObservableList<Contacts> getAllContacts() {
+        return null;
+    }
+
+    void updateContacts();
+    void deleteContacts();
+    void addContacts();
 }

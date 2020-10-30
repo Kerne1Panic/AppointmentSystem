@@ -7,8 +7,11 @@ import javafx.collections.ObservableList;
  * @author josealvarezpulido
  */
 public interface CountriesInt {
-    public ObservableList<Countries> getAllCountries();
-    public void updateCountries();
-    public void deleteCountries();
-    public void addCountries();
+    static ObservableList<Countries> getAllCountries() {
+        return null;
+    }
+
+    void updateCountries();
+    void deleteCountries();
+    void addCountries();
 }

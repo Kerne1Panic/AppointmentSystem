@@ -71,8 +71,20 @@ public class CustomersImp implements CustomersInt {
 
     }
 
+    /**
+     *
+     * @param name
+     * @param address
+     * @param postalCode
+     * @param phone
+     * @param divisionId
+     */
+    public static void addCustomers(String name, String address, String postalCode, String phone, int divisionId) {
+        String sqlStatement = "INSERT INTO customers(Customer_Name,Address,Postal_Code,Phone,";
+        try{
 
-    public static void addCustomers() {
-
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
