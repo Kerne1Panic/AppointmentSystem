@@ -1,5 +1,14 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.ContactsImp;
+import AppointmentSystem.DAOImp.CustomersImp;
+import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.Model.Contacts;
+import AppointmentSystem.Model.Customers;
+import AppointmentSystem.Model.Users;
+import AppointmentSystem.Utilities.TimeUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +21,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -41,16 +54,16 @@ public class ScheduleAddController implements Initializable {
     private Label typeLabel;
 
     @FXML
-    private ComboBox<?> contactCombo;
+    private ComboBox<Contacts> contactCombo;
 
     @FXML
-    private ComboBox<?> typeCombo;
+    private ComboBox<String> typeCombo;
 
     @FXML
     private Label startLabel;
 
     @FXML
-    private ComboBox<?> startCombo;
+    private ComboBox<LocalTime> startCombo;
 
     @FXML
     private DatePicker startDate;
@@ -59,7 +72,7 @@ public class ScheduleAddController implements Initializable {
     private Label endLabel;
 
     @FXML
-    private ComboBox<?> endCombo;
+    private ComboBox<LocalTime> endCombo;
 
     @FXML
     private DatePicker endDate;
@@ -77,19 +90,24 @@ public class ScheduleAddController implements Initializable {
     private Label customerIDLabel;
 
     @FXML
-    private ComboBox<?> customerIDCombo;
+    private ComboBox<Customers> customerIDCombo;
 
     @FXML
     private Label userLabel;
 
     @FXML
-    private ComboBox<?> userCombo;
+    private ComboBox<Users> userCombo;
 
     @FXML
     private Button saveButtonText;
 
     @FXML
     private Button cancelButtonText;
+
+    ObservableList<LocalTime> hoursOpen = FXCollections.observableArrayList();
+    LocalTime startTime;
+    LocalTime endTime;
+    int incrementMin;
 
     /**
      *
@@ -109,12 +127,57 @@ public class ScheduleAddController implements Initializable {
         typeLabel.setText(bundle.getString("Type"));
         startLabel.setText(bundle.getString("Start"));
         endLabel.setText(bundle.getString("End"));
-        customerIDLabel.setText(bundle.getString("CustomerId"));
+        customerIDLabel.setText(bundle.getString("Customer"));
         userLabel.setText(bundle.getString("User"));
         //Button Text
         saveButtonText.setText(bundle.getString("Save"));
         cancelButtonText.setText(bundle.getString("Cancel"));
+        //Initialize ComboBoxes
+        contactCombo.setItems(ContactsImp.getAllContacts());
+        customerIDCombo.setItems(CustomersImp.getAllCustomers());
+        userCombo.setItems(UsersImp.getAllUsers());
+        typeCombo.getItems().addAll("De-Briefing","Planning Session","Meeting","One-on-One","Training","On Boarding");
+        //Initialize ComboTime box
+        startTime =  LocalTime.of(07,00);
+        endTime = LocalTime.of(17,00);
+        incrementMin = 15;
+        hoursOpen = TimeUtil.getTimes(startTime,endTime,incrementMin);
+        startCombo.setItems(hoursOpen);
+        endCombo.setPromptText("Select Start hours");
 
+    }
+
+    /**
+     *
+     */
+    public void startTimeCombo()
+    {
+        if(startCombo.getValue() != null){
+            ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(2).plusMinutes(incrementMin),incrementMin);
+            ObservableList<LocalTime> filterEndAppointment = FXCollections.observableArrayList();
+            for(LocalTime time : endAppointment){
+                if(time.isBefore(endTime.plusMinutes(incrementMin)) && time.isAfter(startCombo.getValue())){
+                    filterEndAppointment.add(time);
+                }
+            }
+            endCombo.setItems(filterEndAppointment);
+        }
+        else {
+            System.out.println("Initial Time not selected");
+        }
+    }
+
+    /**
+     *
+     */
+    public void startDatePicker()
+    {
+        if(startDate.getValue() != null){
+            endDate.setValue(startDate.getValue());
+        }
+        else{
+            System.out.println("No Date Picked");
+        }
     }
 
     /**

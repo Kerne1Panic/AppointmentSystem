@@ -1,5 +1,8 @@
 package AppointmentSystem.Utilities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.*;
 
 /**
@@ -34,5 +37,23 @@ public class TimeUtil
         return dateTimeZone;
     }
 
+    /**
+     * returns an observable list of LocalTime(s) incrementing by user selected increment in minutes from the start to end time, the end time must be one increment over the intended end time.
+     * @param start
+     * @param end
+     * @param increment
+     * @return
+     */
+    public static ObservableList<LocalTime> getTimes(LocalTime start, LocalTime end, int increment){
+        ObservableList<LocalTime>  openHours = FXCollections.observableArrayList();
+        if(start.isBefore(end)){
+            while(start.isBefore(end)){
+                openHours.add(start);
+                start = start.plusMinutes(increment);
+            }
+            return openHours;
+        }
+        else return null;
+    }
 
 }
