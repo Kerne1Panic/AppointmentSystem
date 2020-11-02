@@ -154,13 +154,15 @@ public class CustomerMenuController implements Initializable {
             loader.load();
             CustomerUpdateController controller = loader.getController();
             Customers customersSent = customerTable.getSelectionModel().getSelectedItem();
-
             controller.CustomerSent(customersSent);
             Parent update = loader.getRoot();
             Stage updateStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene updateScene = new Scene(update);
             updateStage.setScene(updateScene);
             updateStage.show();
+        }
+        else{
+            System.out.println("No Customer Selected.");
         }
 
     }

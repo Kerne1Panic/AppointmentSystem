@@ -153,6 +153,10 @@ public class ScheduleAddController implements Initializable {
         if(startCombo.getValue() != null){
             ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(2).plusMinutes(incrementMin),incrementMin);
             ObservableList<LocalTime> filterEndAppointment = FXCollections.observableArrayList();
+            /**
+             * assert Exception handling.
+             */
+            assert endAppointment != null;
             for(LocalTime time : endAppointment){
                 if(time.isBefore(endTimes.plusMinutes(incrementMin)) && time.isAfter(startCombo.getValue())){
                     filterEndAppointment.add(time);

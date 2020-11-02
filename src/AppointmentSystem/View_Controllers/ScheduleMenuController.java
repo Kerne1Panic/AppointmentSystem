@@ -166,12 +166,24 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     void updateButton(ActionEvent event) throws IOException
     {
-        Parent updateParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleUpdateView.fxml"));
-        Scene updateScene = new Scene(updateParent);
-        Stage updateStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        updateStage.setScene(updateScene);
-        updateStage.show();
+        if(appointmentTable.getSelectionModel().getSelectedItem() != null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleUpdateView.fxml"));
+            loader.load();
+            ScheduleUpdateController controller = loader.getController();
+            Appointments appointmentsSent = appointmentTable.getSelectionModel().getSelectedItem();
+            controller.appointmentSent(appointmentsSent);
+            Parent update = loader.getRoot();
+            Stage updateStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene updateScene = new Scene(update);
+            updateStage.setScene(updateScene);
+            updateStage.show();
+        }
+        else {
+            System.out.println("No Appointment Selected. ");
+        }
     }
+
     /**
      * This method is used as an action event for the cancel button, changing the Scene of the Stage.
      * @param event

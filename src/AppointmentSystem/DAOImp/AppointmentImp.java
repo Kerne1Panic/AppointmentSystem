@@ -72,7 +72,7 @@ public class AppointmentImp {
     }
 
 
-    public void updateAppointments(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime lastUpdate, String updatedBy, int customerId, int userId, int contactId, int appointmentId) {
+    public static void updateAppointments(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime lastUpdate, String updatedBy, int customerId, int userId, int contactId, int appointmentId) {
         String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ? ";
         try {
             QueryUtil.setPreparedStatement(sqlStatement);
