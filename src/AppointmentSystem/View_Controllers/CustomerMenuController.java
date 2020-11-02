@@ -1,6 +1,8 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.CustomersImp;
+import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Customers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -130,14 +132,20 @@ public class CustomerMenuController implements Initializable {
     @FXML
     void removeCustomerButton(ActionEvent event)
     {
+        int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
         if(customerTable.getSelectionModel().getSelectedItem() != null)
         {
-            int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
+            for(Appointments appointments: AppointmentImp.getAllAppointments()) {
+                if (appointments.getCustomerId() == customerId) {
+                    AppointmentImp.deleteAppointments(appointments.getAppointmentId());
+                }
+            }
             CustomersImp.deleteCustomers(customerId);
             //customer table, set by getAllCustomers. refreshes the Table.
             customerTable.setItems(CustomersImp.getAllCustomers());
         }
     }
+
 
 
     /**

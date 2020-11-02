@@ -1,6 +1,8 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +20,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -31,6 +35,8 @@ public class LogInController implements Initializable {
     //Resource Bundle used for changing languages
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
+    @FXML
+    private Label localeMessage;
     @FXML
     private Label usernameLabel;
     @FXML
@@ -55,6 +61,7 @@ public class LogInController implements Initializable {
         usernameLabel.setText(bundle.getString("Username")+":");
         passwordLabel.setText(bundle.getString("Password")+":");
         titleLabel.setText(bundle.getString("LoginScreen"));
+        localeMessage.setText(String.valueOf(ZoneId.systemDefault()));
     }
     /**
      * The Username text is matched against the usernames in the database, if there is a match the passwords are compared.
@@ -71,6 +78,17 @@ public class LogInController implements Initializable {
             if(user != null){
                 //comparing the user names to the ones in the database, case sensitive.
                 if(user.getPassword().equals(usernamePassword.getText())){
+                    //Displays a message if an appointment is within 15 minutes for the User.
+                    //Convert into UTC for comparison
+                    for(Appointments appointments : AppointmentImp.getAllAppointments()){
+                        if(user.getUserId() == appointments.getUserId()){
+                            ZonedDateTime userZDT = ZonedDateTime.now();
+                            if(appointments.getStart().minusMinutes(15).isEqual(userZDT) || appointments.getStart().minusMinutes(15).isBefore(userZDT)){
+                                //Alert message
+                                Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, "Test");
+                            }
+                        }
+                    }
                     Parent mainMenuParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/MainMenuView.fxml"));
                     Scene mainMenuScene = new Scene(mainMenuParent);
                     Stage mainMenu = (Stage)((Node)event.getSource()).getScene().getWindow();

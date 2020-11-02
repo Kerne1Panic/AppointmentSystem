@@ -52,10 +52,10 @@ public class UsersImp {
                 String password = rs.getString("Password");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.mergeDateTime(date,time);
+                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.mergeDateTime(last);
+                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(last);
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 Users userFound = new Users(userId,user,password,createDate,createdBy,lastUpdate,lastUpdatedBy);
@@ -117,10 +117,10 @@ public class UsersImp {
                 String password = rs.getString("Password");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.mergeDateTime(date,time);
+                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.mergeDateTime(last);
+                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(last);
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 userFound = new Users(userId,user,password,createDate,createdBy,lastUpdate,lastUpdatedBy);

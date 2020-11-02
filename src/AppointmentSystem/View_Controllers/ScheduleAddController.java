@@ -136,9 +136,10 @@ public class ScheduleAddController implements Initializable {
         userCombo.setItems(UsersImp.getAllUsers());
         typeCombo.getItems().addAll("De-Briefing","Planning Session","Meeting","One-on-One","Training","On Boarding");
         //Initialize ComboTime box
-        startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0)),ZoneId.of("America/New_York"))).toLocalTime();
-        endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(17, 0)),ZoneId.of("America/New_York"))).toLocalTime();
-        incrementMin = 15;
+        //Business hours are dedicated in Eastern Time.
+        startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(8,0)),ZoneId.of("America/New_York"))).toLocalTime();
+        endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(22, 0)),ZoneId.of("America/New_York"))).toLocalTime();
+        incrementMin = 30;
         hoursOpen = TimeUtil.getTimes(startTimes,endTimes,incrementMin);
         startCombo.setItems(hoursOpen);
         endCombo.setPromptText("Select Start hours");
@@ -215,9 +216,9 @@ public class ScheduleAddController implements Initializable {
             LocalTime endTime = endCombo.getValue();
             LocalDate dateEnd = endDate.getValue();
             LocalDateTime  createDateTime = LocalDateTime.now();
-            LocalDateTime start = TimeUtil.convertToET(LocalDateTime.of(dateStart,startTime),myZoneId);
-            LocalDateTime end = TimeUtil.convertToET(LocalDateTime.of(dateEnd,endTime), myZoneId);
-            LocalDateTime create = TimeUtil.convertToET(createDateTime,myZoneId);
+            LocalDateTime start = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
+            LocalDateTime end = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
+            LocalDateTime create = TimeUtil.convertToUTC(createDateTime,myZoneId);
             String createdBy = UsersImp.getUserLoggedIn();
             int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
             int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();

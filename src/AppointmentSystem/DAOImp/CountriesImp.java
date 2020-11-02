@@ -34,10 +34,10 @@ public class CountriesImp {
                 String countryName = rs.getString("Country");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.mergeDateTime(date,time);
+                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime update = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.mergeDateTime(update);
+                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(update);
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 Countries countriesFound = new Countries(countryId,countryName,createDate,createdBy,lastUpdate,lastUpdatedBy);

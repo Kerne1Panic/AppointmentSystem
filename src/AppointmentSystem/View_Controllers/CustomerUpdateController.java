@@ -4,11 +4,12 @@ import AppointmentSystem.DAOImp.CountriesImp;
 import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.DivisionsImp;
 import AppointmentSystem.DAOImp.UsersImp;
-import AppointmentSystem.DAOInterface.LambdaCountry;
-import AppointmentSystem.DAOInterface.LambdaDiv;
+import AppointmentSystem.LambdaInterfaces.LambdaCountry;
+import AppointmentSystem.LambdaInterfaces.LambdaDiv;
 import AppointmentSystem.Model.Countries;
 import AppointmentSystem.Model.Customers;
 import AppointmentSystem.Model.Divisions;
+import AppointmentSystem.Utilities.TimeUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -216,8 +219,10 @@ public class CustomerUpdateController implements Initializable {
                 if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId())
                 {
                     int division = divisionCombo.getValue().getDivisionId();
-                    CustomersImp.updateCustomers(name, address,postalCode,phone,division,customerId);
-
+                    ZoneId zoneId = ZoneId.systemDefault();
+                    LocalDateTime update = LocalDateTime.now();
+                    LocalDateTime lastUpdated = TimeUtil.convertToUTC(update,zoneId);
+                    CustomersImp.updateCustomers(name, address,postalCode,phone, lastUpdated, division,customerId);
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
                     Scene cancelScene = new Scene(cancelParent);
                     Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();

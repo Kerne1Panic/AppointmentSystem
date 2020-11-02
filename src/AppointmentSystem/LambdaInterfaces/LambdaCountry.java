@@ -1,4 +1,4 @@
-package AppointmentSystem.DAOInterface;
+package AppointmentSystem.LambdaInterfaces;
 
 import AppointmentSystem.Model.Countries;
 

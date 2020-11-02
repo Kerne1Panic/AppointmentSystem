@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -43,10 +44,10 @@ public class CustomersImp {
                 String phone = rs.getString("Phone");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.mergeDateTime(date,time);
+                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime lastDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.mergeDateTime(lastDateTime);
+                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(lastDateTime);
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int divisionId = rs.getInt("Division_ID");
                 Customers customersFound = new Customers(customerID,customerName,address,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdatedBy,divisionId);
@@ -60,8 +61,8 @@ public class CustomersImp {
     }
 
 
-    public static void updateCustomers(String name,String address,String postalCode,String phone,int divisionId, int customerId) {
-        String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = Current_Timestamp, last_Updated_By = ? , Division_ID  = ? WHERE Customer_ID = ?";
+    public static void updateCustomers(String name,String address,String postalCode,String phone, LocalDateTime lastUpdated, int divisionId, int customerId) {
+        String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, last_Updated_By = ? , Division_ID  = ? WHERE Customer_ID = ?";
         try {
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -69,9 +70,10 @@ public class CustomersImp {
             ps.setString(2,address);
             ps.setString(3,postalCode);
             ps.setString(4,phone);
-            ps.setString(5,UsersImp.getUserLoggedIn());
-            ps.setInt(6,divisionId);
-            ps.setInt(7,customerId);
+            ps.setTimestamp(5,Timestamp.valueOf(lastUpdated));
+            ps.setString(6,UsersImp.getUserLoggedIn());
+            ps.setInt(7,divisionId);
+            ps.setInt(8,customerId);
 
             ps.execute();
         }catch (Exception e){
@@ -101,9 +103,9 @@ public class CustomersImp {
      * @param phone
      * @param divisionId
      */
-    public static void addCustomers(String name, String address, String postalCode, String phone, int divisionId) {
-        String sqlStatement = "INSERT INTO customers(Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Division_ID)" +
-                "VALUES(?,?,?,?,CURRENT_TIMESTAMP,?,?)";
+    public static void addCustomers(String name, String address, String postalCode, String phone, LocalDateTime createDate, int divisionId) {
+        String sqlStatement = "INSERT INTO customers(Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Division_ID,Last_Update)" +
+                "VALUES(?,?,?,?,?,?,?,?)";
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -111,8 +113,10 @@ public class CustomersImp {
             ps.setString(2,address);
             ps.setString(3,postalCode);
             ps.setString(4,phone);
-            ps.setString(5,UsersImp.getUserLoggedIn());
-            ps.setInt(6,divisionId);
+            ps.setTimestamp(5, Timestamp.valueOf(createDate));
+            ps.setString(6,UsersImp.getUserLoggedIn());
+            ps.setInt(7,divisionId);
+            ps.setTimestamp(8,Timestamp.valueOf(createDate));
 
             ps.execute();
 

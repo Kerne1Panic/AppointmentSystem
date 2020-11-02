@@ -21,7 +21,10 @@
             <Pane prefHeight="233.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <Pane prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+            <Pane prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="localeMessage" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="48.0" prefWidth="261.0" />
+               </children></Pane>
          </bottom>
          <top>
             <Pane prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER">

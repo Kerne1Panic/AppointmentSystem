@@ -5,6 +5,7 @@ import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.DivisionsImp;
 import AppointmentSystem.Model.Countries;
 import AppointmentSystem.Model.Divisions;
+import AppointmentSystem.Utilities.TimeUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -100,7 +103,6 @@ public class CustomerAddController implements Initializable {
         //After Selecting the Country a list of the Divisions for that country are allowed to be selected in Division combo box
         countryCombo.setItems(CountriesImp.getAllCountries());
     }
-
     /**
      * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
      */
@@ -131,7 +133,6 @@ public class CustomerAddController implements Initializable {
         cancelStage.setScene(cancelScene);
         cancelStage.show();
     }
-
     /**
      *
      * @param event
@@ -146,8 +147,10 @@ public class CustomerAddController implements Initializable {
             if(!nameField.getText().isBlank() && !addressField.getText().isBlank() && divisionCombo.getValue() != null && !postalField.getText().isBlank() && !phoneField.getText().isBlank()){
                 if(divisionCombo.getValue().getCountryId() == countryCombo.getValue().getCountryId()) {
                     int divisionId = divisionCombo.getValue().getDivisionId();
-                    CustomersImp.addCustomers(name, address, postalCode, phone, divisionId);
-
+                    ZoneId myZoneId = ZoneId.systemDefault();
+                    LocalDateTime create = LocalDateTime.now();
+                    LocalDateTime createDate = TimeUtil.convertToUTC(create, myZoneId);
+                    CustomersImp.addCustomers(name, address, postalCode, phone, createDate, divisionId);
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));
                     Scene cancelScene = new Scene(cancelParent);
                     Stage cancelStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -161,11 +164,8 @@ public class CustomerAddController implements Initializable {
             else {
                 System.out.println("Missing Values");
             }
-
-
         }catch (Exception e){
             System.out.println("Error: "+e.getMessage());
         }
-
     }
 }
