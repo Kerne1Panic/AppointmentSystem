@@ -8,10 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class CountriesImp {
 
@@ -34,10 +31,10 @@ public class CountriesImp {
                 String countryName = rs.getString("Country");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
+                ZonedDateTime createDate = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(date,time),ZoneId.of("UTC")));
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime update = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(update);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(update,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 Countries countriesFound = new Countries(countryId,countryName,createDate,createdBy,lastUpdate,lastUpdatedBy);

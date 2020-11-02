@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * @author josealvarezpulido
@@ -52,10 +49,10 @@ public class UsersImp {
                 String password = rs.getString("Password");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
+                ZonedDateTime createDate = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(date,time), ZoneId.of("UTC"))) ;
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(last);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(last,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 Users userFound = new Users(userId,user,password,createDate,createdBy,lastUpdate,lastUpdatedBy);
@@ -117,10 +114,10 @@ public class UsersImp {
                 String password = rs.getString("Password");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
+                ZonedDateTime createDate = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(date,time),ZoneId.of("UTC")));
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(last);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(last, ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
 
                 userFound = new Users(userId,user,password,createDate,createdBy,lastUpdate,lastUpdatedBy);

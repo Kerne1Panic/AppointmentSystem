@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * @author josealvarezpulido
@@ -44,16 +41,16 @@ public class AppointmentImp {
                 String type = rs.getString("Type");
                 LocalDate startDate = rs.getDate("Start").toLocalDate();
                 LocalTime startTime = rs.getTime("Start").toLocalTime();
-                ZonedDateTime start = TimeUtil.zonedDateTimeET(startDate,startTime);
+                ZonedDateTime start = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(startDate,startTime), ZoneId.of("UTC")));
                 LocalDate endDate = rs.getDate("End").toLocalDate();
                 LocalTime endTime = rs.getTime("End").toLocalTime();
-                ZonedDateTime end = TimeUtil.zonedDateTimeET(endDate,endTime);
+                ZonedDateTime end = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(endDate,endTime), ZoneId.of("UTC")));
                 LocalDate create_date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime createTime = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(create_date,createTime);
+                ZonedDateTime createDate = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(create_date,createTime),ZoneId.of("UTC")));
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(last);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(last,ZoneId.of("UTC")));
                 String lastUpdateBy = rs.getString("Last_Updated_By");
                 int customerId = rs.getInt("Customer_ID");
                 int userId = rs.getInt("User_ID");

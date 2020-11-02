@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 
 /**
@@ -44,10 +41,10 @@ public class CustomersImp {
                 String phone = rs.getString("Phone");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
+                ZonedDateTime createDate = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(date,time),ZoneId.of("UTC")));
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime lastDateTime = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(lastDateTime);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(lastDateTime,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int divisionId = rs.getInt("Division_ID");
                 Customers customersFound = new Customers(customerID,customerName,address,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdatedBy,divisionId);

@@ -8,10 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class DivisionsImp  {
 
@@ -34,10 +31,10 @@ public class DivisionsImp  {
                 String DivisionName = rs.getString("Division");
                 LocalDate date = rs.getDate("Create_Date").toLocalDate();
                 LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                ZonedDateTime createDate = TimeUtil.zonedDateTimeET(date,time);
+                ZonedDateTime createDate = TimeUtil.convertBack( ZonedDateTime.of(LocalDateTime.of(date,time), ZoneId.of("UTC")));
                 String createdBy = rs.getString("Created_By");
                 LocalDateTime update = rs.getTimestamp("Last_Update").toLocalDateTime();
-                ZonedDateTime lastUpdate = TimeUtil.zonedDateTimeET(update);
+                ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(update,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int countryId = rs.getInt("Country_ID");
 
