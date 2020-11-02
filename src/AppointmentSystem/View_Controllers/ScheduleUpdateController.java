@@ -1,5 +1,9 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.Model.Contacts;
+import AppointmentSystem.Model.Customers;
+import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +16,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -47,16 +55,16 @@ public class ScheduleUpdateController implements Initializable {
     private Label typeLabel;
 
     @FXML
-    private ComboBox<?> contactCombo;
+    private ComboBox<Contacts> contactCombo;
 
     @FXML
-    private ComboBox<?> typeCombo;
+    private ComboBox<String> typeCombo;
 
     @FXML
     private Label startLabel;
 
     @FXML
-    private ComboBox<?> startCombo;
+    private ComboBox<LocalTime> startCombo;
 
     @FXML
     private DatePicker startDate;
@@ -65,7 +73,7 @@ public class ScheduleUpdateController implements Initializable {
     private Label endLabel;
 
     @FXML
-    private ComboBox<?> endCombo;
+    private ComboBox<LocalTime> endCombo;
 
     @FXML
     private DatePicker endDate;
@@ -83,13 +91,13 @@ public class ScheduleUpdateController implements Initializable {
     private Label customerIDLabel;
 
     @FXML
-    private ComboBox<?> customerIDCombo;
+    private ComboBox<Customers> customerIDCombo;
 
     @FXML
     private Label userLabel;
 
     @FXML
-    private ComboBox<?> userCombo;
+    private ComboBox<Users> userCombo;
 
     @FXML
     private Button saveButtonText;
@@ -146,6 +154,19 @@ public class ScheduleUpdateController implements Initializable {
     @FXML
     void saveButton(ActionEvent event)
     {
-
+        String title = titleField.getText();
+        String description = descriptionField.getText();
+        String location = locationField.getText();
+        String type = typeCombo.getValue();
+        ZoneId myZoneId = ZoneId.systemDefault();
+        LocalTime startTime = startCombo.getValue();
+        LocalDate dateStart = startDate.getValue();
+        LocalTime endTime = endCombo.getValue();
+        LocalDate dateEnd = endDate.getValue();
+        LocalDateTime createDateTime = LocalDateTime.now();
+        String createdBy = UsersImp.getUserLoggedIn();
+        int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
+        int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
+        int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
     }
 }

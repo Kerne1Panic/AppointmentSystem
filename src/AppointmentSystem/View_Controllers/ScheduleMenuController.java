@@ -1,7 +1,9 @@
 package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.AppointmentImp;
+import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.Model.Appointments;
+import AppointmentSystem.Model.Customers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +43,7 @@ public class ScheduleMenuController implements Initializable {
     private TableColumn<?, ?> descriptionCol;
 
     @FXML
-    private TableColumn<?, ?> customerIDCol;
+    private TableColumn<Appointments, Customers> customerIDCol;
 
     @FXML
     private TableColumn<?, ?> typeCol;
@@ -109,11 +111,11 @@ public class ScheduleMenuController implements Initializable {
         endCol.setText(bundle.getString("End"));
         locationCol.setText(bundle.getString("Location"));
         //column property values
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         appointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
@@ -125,8 +127,6 @@ public class ScheduleMenuController implements Initializable {
         this.weeklyRadio.setToggleGroup(filterGroup);
         //set Schedule Table
         appointmentTable.setItems(AppointmentImp.getAllAppointments());
-
-
 
     }
 
@@ -151,7 +151,12 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     void removeButton(ActionEvent event)
     {
-
+        if(appointmentTable.getSelectionModel().getSelectedItem() != null){
+            Appointments removeAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+            AppointmentImp.deleteAppointments(removeAppointment.getAppointmentId());
+            appointmentTable.setItems(AppointmentImp.getAllAppointments());
+        }
+        else System.out.println("No Appointment Selected.");
     }
 
     /**

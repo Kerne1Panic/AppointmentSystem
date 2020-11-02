@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.CustomersInt;
 import AppointmentSystem.Model.Customers;
 import AppointmentSystem.Utilities.QueryUtil;
 import AppointmentSystem.Utilities.TimeUtil;
@@ -18,7 +17,7 @@ import java.time.ZonedDateTime;
 /**
  * @author josealvarezpulido
  */
-public class CustomersImp implements CustomersInt {
+public class CustomersImp {
     //ObservableList of all customers.
      static ObservableList<Customers> customers = FXCollections.observableArrayList();
 
@@ -75,7 +74,6 @@ public class CustomersImp implements CustomersInt {
             ps.setInt(7,customerId);
 
             ps.execute();
-
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

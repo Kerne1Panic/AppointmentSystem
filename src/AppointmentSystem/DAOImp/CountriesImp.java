@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.CountriesInt;
 import AppointmentSystem.Model.Countries;
 import AppointmentSystem.Utilities.QueryUtil;
 import AppointmentSystem.Utilities.TimeUtil;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-public class CountriesImp implements CountriesInt {
+public class CountriesImp {
 
     static ObservableList<Countries> countries = FXCollections.observableArrayList();
 

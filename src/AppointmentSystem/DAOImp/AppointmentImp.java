@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.AppointmentInt;
 import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Utilities.QueryUtil;
 import AppointmentSystem.Utilities.TimeUtil;
@@ -9,6 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,14 +17,15 @@ import java.time.ZonedDateTime;
 /**
  * @author josealvarezpulido
  */
-public class AppointmentImp implements AppointmentInt {
+public class AppointmentImp {
 
     static ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
-
-
     public static ObservableList<Appointments> getAllAppointments() {
-        final String sqlStatement = "SELECT * FROM appointments";
+        final String sqlStatement = "SELECT * FROM appointments, customers, users, contacts " +
+                "WHERE appointments.Customer_ID = customers.Customer_ID " +
+                "AND appointments.user_ID = users.user_ID " +
+                "AND appointments.contact_ID = contacts.contact_ID";
         if(appointments != null){
             appointments.clear();
         }
@@ -57,8 +58,11 @@ public class AppointmentImp implements AppointmentInt {
                 int customerId = rs.getInt("Customer_ID");
                 int userId = rs.getInt("User_ID");
                 int contactId = rs.getInt("Contact_ID");
+                String customerName = rs.getString("Customer_Name");
+                String userName = rs.getString("User_Name");
+                String contactName = rs.getString("Contact_Name");
 
-                Appointments appointmentsFound = new Appointments(appointmentId,title,description,location,type,start,end,createDate,createdBy,lastUpdate,lastUpdateBy,customerId,userId,contactId);
+                Appointments appointmentsFound = new Appointments(appointmentId,title,description,location,type,start,end,createDate,createdBy,lastUpdate,lastUpdateBy,customerId,userId,contactId,customerName,userName,contactName);
                 appointments.add(appointmentsFound);
             }
         }catch (Exception e){
@@ -68,16 +72,64 @@ public class AppointmentImp implements AppointmentInt {
     }
 
 
-    public void updateAppointments() {
+    public void updateAppointments(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime lastUpdate, String updatedBy, int customerId, int userId, int contactId, int appointmentId) {
+        String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ? ";
+        try {
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setTimestamp(7, Timestamp.valueOf(lastUpdate));
+            ps.setString(8, updatedBy);
+            ps.setInt(9, customerId);
+            ps.setInt(10, userId);
+            ps.setInt(11, contactId);
+            ps.setInt(12, appointmentId);
 
+            ps.execute();
+        }catch (Exception e){
+            System.out.println("Error Update: "+e.getMessage());
+        }
     }
 
 
-    public void deleteAppointments() {
-
+    public static void deleteAppointments(int appointmentId) {
+        String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        try{
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setInt(1,appointmentId);
+            ps.execute();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void addAppointments() {
+    public static void addAppointments(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime created, String createdBy, int customerId, int userId, int contactId) {
+        String sqlStatement = "INSERT INTO appointments(Title,Description,Location,Type,Start,End,Create_Date,Created_By,Customer_ID,User_ID,Contact_ID)"+
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            QueryUtil.setPreparedStatement(sqlStatement);
+            PreparedStatement ps = QueryUtil.getPreparedStatement();
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setTimestamp(7, Timestamp.valueOf(created));
+            ps.setString(8, createdBy);
+            ps.setInt(9, customerId);
+            ps.setInt(10, userId);
+            ps.setInt(11, contactId);
 
+            ps.execute();
+        }catch (Exception e){
+            System.out.println("Error Update: "+e.getMessage());
+        }
     }
 }

@@ -18,8 +18,12 @@ public class Appointments {
     private int customerId;  //Foreign Key
     private int userId;    //Foreign Key
     private int contactId;  //Foreign Key
+    private String customerName;
+    private String userName;
+    private String contactName;
 
-    public Appointments(int appointmentId, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy, int customerId, int userId, int contactId) {
+
+    public Appointments(int appointmentId, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy, int customerId, int userId, int contactId, String customerName, String userName, String contactName) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -34,6 +38,9 @@ public class Appointments {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+        this.customerName = customerName;
+        this.userName = userName;
+        this.contactName = contactName;
     }
 
     public int getAppointmentId() {
@@ -146,5 +153,27 @@ public class Appointments {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+    }
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }

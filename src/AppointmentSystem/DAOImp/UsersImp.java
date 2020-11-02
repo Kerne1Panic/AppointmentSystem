@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.UsersInt;
 import AppointmentSystem.Model.Users;
 import AppointmentSystem.Utilities.QueryUtil;
 import AppointmentSystem.Utilities.TimeUtil;
@@ -17,9 +16,9 @@ import java.time.ZonedDateTime;
 
 /**
  * @author josealvarezpulido
- * Implements the UsersInt interface, used to perform CRUD operations to the Database data.
+ * Implements User Model  used to perform CRUD operations to the Database data.
  */
-public class UsersImp implements UsersInt {
+public class UsersImp {
 
     //static attribute used to store the extracted and created Objects of the Users class.
     static ObservableList<Users> users = FXCollections.observableArrayList();

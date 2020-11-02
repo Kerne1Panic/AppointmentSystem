@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.DivisionsInt;
 import AppointmentSystem.Model.Divisions;
 import AppointmentSystem.Utilities.QueryUtil;
 import AppointmentSystem.Utilities.TimeUtil;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-public class DivisionsImp implements DivisionsInt {
+public class DivisionsImp  {
 
     static ObservableList<Divisions> divisions = FXCollections.observableArrayList();
 

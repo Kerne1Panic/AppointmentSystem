@@ -1,6 +1,5 @@
 package AppointmentSystem.DAOImp;
 
-import AppointmentSystem.DAOInterface.ContactsInt;
 import AppointmentSystem.Model.Contacts;
 import AppointmentSystem.Utilities.QueryUtil;
 import javafx.collections.FXCollections;
@@ -9,7 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class ContactsImp implements ContactsInt {
+public class ContactsImp {
 
     static ObservableList<Contacts> contacts = FXCollections.observableArrayList();
 

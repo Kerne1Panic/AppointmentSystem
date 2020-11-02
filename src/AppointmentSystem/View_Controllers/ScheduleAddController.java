@@ -1,5 +1,6 @@
 package AppointmentSystem.View_Controllers;
 
+import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.ContactsImp;
 import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.UsersImp;
@@ -21,10 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
+import java.time.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -105,8 +103,8 @@ public class ScheduleAddController implements Initializable {
     private Button cancelButtonText;
 
     ObservableList<LocalTime> hoursOpen = FXCollections.observableArrayList();
-    LocalTime startTime;
-    LocalTime endTime;
+    LocalTime startTimes;
+    LocalTime endTimes;
     int incrementMin;
 
     /**
@@ -138,10 +136,10 @@ public class ScheduleAddController implements Initializable {
         userCombo.setItems(UsersImp.getAllUsers());
         typeCombo.getItems().addAll("De-Briefing","Planning Session","Meeting","One-on-One","Training","On Boarding");
         //Initialize ComboTime box
-        startTime =  LocalTime.of(07,00);
-        endTime = LocalTime.of(17,00);
+        startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(9,0)),ZoneId.of("America/New_York"))).toLocalTime();
+        endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(17, 0)),ZoneId.of("America/New_York"))).toLocalTime();
         incrementMin = 15;
-        hoursOpen = TimeUtil.getTimes(startTime,endTime,incrementMin);
+        hoursOpen = TimeUtil.getTimes(startTimes,endTimes,incrementMin);
         startCombo.setItems(hoursOpen);
         endCombo.setPromptText("Select Start hours");
 
@@ -156,7 +154,7 @@ public class ScheduleAddController implements Initializable {
             ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(2).plusMinutes(incrementMin),incrementMin);
             ObservableList<LocalTime> filterEndAppointment = FXCollections.observableArrayList();
             for(LocalTime time : endAppointment){
-                if(time.isBefore(endTime.plusMinutes(incrementMin)) && time.isAfter(startCombo.getValue())){
+                if(time.isBefore(endTimes.plusMinutes(incrementMin)) && time.isAfter(startCombo.getValue())){
                     filterEndAppointment.add(time);
                 }
             }
@@ -202,6 +200,41 @@ public class ScheduleAddController implements Initializable {
     @FXML
     void saveButton(ActionEvent event)
     {
-    }
+        String title = titleField.getText();
+        String description = descriptionField.getText();
+        String location = locationField.getText();
+        try{
+            String type = typeCombo.getValue();
+            ZoneId myZoneId = ZoneId.systemDefault();
+            LocalTime startTime = startCombo.getValue();
+            LocalDate dateStart = startDate.getValue();
+            LocalTime endTime = endCombo.getValue();
+            LocalDate dateEnd = endDate.getValue();
+            LocalDateTime  createDateTime = LocalDateTime.now();
+            LocalDateTime start = TimeUtil.convertToET(LocalDateTime.of(dateStart,startTime),myZoneId);
+            LocalDateTime end = TimeUtil.convertToET(LocalDateTime.of(dateEnd,endTime), myZoneId);
+            LocalDateTime create = TimeUtil.convertToET(createDateTime,myZoneId);
+            String createdBy = UsersImp.getUserLoggedIn();
+            int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
+            int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
+            int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
 
+            if(!titleField.getText().isBlank() &&typeCombo.getValue() != null && !descriptionField.getText().isBlank() && !locationField.getText().isBlank()
+            && startCombo.getValue() != null && startDate.getValue() != null && endCombo.getValue() != null && customerIDCombo.getValue() != null
+            && userCombo.getValue() != null && contactCombo.getValue() != null)
+            {
+                AppointmentImp.addAppointments(title,description,location,type,start,end,create,createdBy,customerId,userId,contactId);
+                Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
+                Scene cancelScene = new Scene(cancelParent);
+                Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                cancelStage.setScene(cancelScene);
+                cancelStage.show();
+            }
+            else {
+                System.out.println("Missing Values");
+            }
+        }catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }
