@@ -24,7 +24,8 @@ public class CustomersImp {
         if(customers != null){
             customers.clear();
         }
-        String sqlStatement = "SELECT * FROM customers";
+        String sqlStatement = "SELECT * FROM customers, first_level_divisions WHERE" +
+                " customers.Division_ID = first_level_divisions.Division_ID";
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -47,7 +48,8 @@ public class CustomersImp {
                 ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(lastDateTime,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
                 int divisionId = rs.getInt("Division_ID");
-                Customers customersFound = new Customers(customerID,customerName,address,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdatedBy,divisionId);
+                String  divisionName = rs.getString("Division");
+                Customers customersFound = new Customers(customerID,customerName,address,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdatedBy,divisionId,divisionName);
                 customers.add(customersFound);
             }
         }catch (Exception e)

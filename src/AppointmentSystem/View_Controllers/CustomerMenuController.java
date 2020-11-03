@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -22,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -57,6 +55,9 @@ public class CustomerMenuController implements Initializable {
     private TableColumn<Customers,ZonedDateTime> updatedCol;
 
     @FXML
+    private TableColumn<Customers,String> divisionCol;
+
+    @FXML
     private Label titleLabel;
 
     @FXML
@@ -70,6 +71,9 @@ public class CustomerMenuController implements Initializable {
 
     @FXML
     private Button cancelButton;
+
+    @FXML
+    private Label errorLabel;
 
     /**
      * initializes the labels, column names, and button text, sets Property values for the columns so that they could be receive the data from the database.
@@ -89,7 +93,7 @@ public class CustomerMenuController implements Initializable {
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         createdCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
         updatedCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
-
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
         //customer table, set by getAllCustomers.
         customerTable.setItems(CustomersImp.getAllCustomers());
         //Title Text
@@ -107,8 +111,9 @@ public class CustomerMenuController implements Initializable {
         phoneCol.setText(bundle.getString("Phone"));
         createdCol.setText(bundle.getString("Created"));
         updatedCol.setText(bundle.getString("Updated"));
-
+        divisionCol.setText(bundle.getString("Division"));
     }
+
     /**
      * This method is used as an action event for the add customer button, changing the Scene of the Stage.
      * @param event
@@ -132,21 +137,32 @@ public class CustomerMenuController implements Initializable {
     @FXML
     void removeCustomerButton(ActionEvent event)
     {
-        int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
+        errorLabel.setText("");
         if(customerTable.getSelectionModel().getSelectedItem() != null)
         {
-            for(Appointments appointments: AppointmentImp.getAllAppointments()) {
-                if (appointments.getCustomerId() == customerId) {
-                    AppointmentImp.deleteAppointments(appointments.getAppointmentId());
+            Customers customers = customerTable.getSelectionModel().getSelectedItem();
+            String customerName = customers.getCustomerName();
+            int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
+            Alert deleteCustomer = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("DeleteCustomer")+ ": " +customerName);
+            Optional<ButtonType> result = deleteCustomer.showAndWait();
+            if(result.get() == ButtonType.OK){
+                for(Appointments appointments: AppointmentImp.getAllAppointments()) {
+                    if (appointments.getCustomerId() == customerId) {
+                        AppointmentImp.deleteAppointments(appointments.getAppointmentId());
+                    }
                 }
+                Alert customerDeleted = new Alert(Alert.AlertType.INFORMATION,customerName + " "+ bundle.getString("customerDeleted"));
+                CustomersImp.deleteCustomers(customerId);
+                customerDeleted.showAndWait();
+                //customer table, set by getAllCustomers. refreshes the Table.
+                customerTable.setItems(CustomersImp.getAllCustomers());
+
             }
-            CustomersImp.deleteCustomers(customerId);
-            //customer table, set by getAllCustomers. refreshes the Table.
-            customerTable.setItems(CustomersImp.getAllCustomers());
+        }
+        else {
+            errorLabel.setText(bundle.getString("NothingSelected"));
         }
     }
-
-
 
     /**
      * This method is used as an action event for the add customer button, changing the Scene of the Stage.
@@ -156,6 +172,7 @@ public class CustomerMenuController implements Initializable {
     @FXML
     void updateCustomerButton(ActionEvent event) throws IOException
     {
+        errorLabel.setText("");
         if(customerTable.getSelectionModel().getSelectedItem() != null){
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerUpdateView.fxml"));
@@ -170,7 +187,7 @@ public class CustomerMenuController implements Initializable {
             updateStage.show();
         }
         else{
-            System.out.println("No Customer Selected.");
+            errorLabel.setText(bundle.getString("NothingSelected"));
         }
 
     }
@@ -189,5 +206,4 @@ public class CustomerMenuController implements Initializable {
         cancelStage.setScene(cancelScene);
         cancelStage.show();
     }
-
 }

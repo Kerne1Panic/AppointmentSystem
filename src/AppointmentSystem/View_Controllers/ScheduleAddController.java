@@ -102,6 +102,10 @@ public class ScheduleAddController implements Initializable {
     @FXML
     private Button cancelButtonText;
 
+    @FXML
+    private Label errorLabel;
+
+
     ObservableList<LocalTime> hoursOpen = FXCollections.observableArrayList();
     LocalTime startTimes;
     LocalTime endTimes;
@@ -139,10 +143,12 @@ public class ScheduleAddController implements Initializable {
         //Business hours are dedicated in Eastern Time.
         startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(8,0)),ZoneId.of("America/New_York"))).toLocalTime();
         endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(22, 0)),ZoneId.of("America/New_York"))).toLocalTime();
-        incrementMin = 30;
+        incrementMin = 15;
         hoursOpen = TimeUtil.getTimes(startTimes,endTimes,incrementMin);
         startCombo.setItems(hoursOpen);
         endCombo.setPromptText("Select Start hours");
+        //errorLabel
+        errorLabel.setText("");
 
     }
 
@@ -151,6 +157,7 @@ public class ScheduleAddController implements Initializable {
      */
     public void startTimeCombo()
     {
+        errorLabel.setText("");
         if(startCombo.getValue() != null){
             ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(2).plusMinutes(incrementMin),incrementMin);
             ObservableList<LocalTime> filterEndAppointment = FXCollections.observableArrayList();
@@ -165,9 +172,6 @@ public class ScheduleAddController implements Initializable {
             }
             endCombo.setItems(filterEndAppointment);
         }
-        else {
-            System.out.println("Initial Time not selected");
-        }
     }
 
     /**
@@ -175,11 +179,9 @@ public class ScheduleAddController implements Initializable {
      */
     public void startDatePicker()
     {
+        errorLabel.setText("");
         if(startDate.getValue() != null){
             endDate.setValue(startDate.getValue());
-        }
-        else{
-            System.out.println("No Date Picked");
         }
     }
 
@@ -205,29 +207,30 @@ public class ScheduleAddController implements Initializable {
     @FXML
     void saveButton(ActionEvent event)
     {
+        errorLabel.setText("");
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
         try{
-            String type = typeCombo.getValue();
-            ZoneId myZoneId = ZoneId.systemDefault();
-            LocalTime startTime = startCombo.getValue();
-            LocalDate dateStart = startDate.getValue();
-            LocalTime endTime = endCombo.getValue();
-            LocalDate dateEnd = endDate.getValue();
-            LocalDateTime  createDateTime = LocalDateTime.now();
-            LocalDateTime start = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
-            LocalDateTime end = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
-            LocalDateTime create = TimeUtil.convertToUTC(createDateTime,myZoneId);
-            String createdBy = UsersImp.getUserLoggedIn();
-            int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
-            int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
-            int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
-
             if(!titleField.getText().isBlank() &&typeCombo.getValue() != null && !descriptionField.getText().isBlank() && !locationField.getText().isBlank()
             && startCombo.getValue() != null && startDate.getValue() != null && endCombo.getValue() != null && customerIDCombo.getValue() != null
             && userCombo.getValue() != null && contactCombo.getValue() != null)
             {
+                String type = typeCombo.getValue();
+                ZoneId myZoneId = ZoneId.systemDefault();
+                LocalTime startTime = startCombo.getValue();
+                LocalDate dateStart = startDate.getValue();
+                LocalTime endTime = endCombo.getValue();
+                LocalDate dateEnd = endDate.getValue();
+                LocalDateTime  createDateTime = LocalDateTime.now();
+                LocalDateTime start = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
+                LocalDateTime end = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
+                LocalDateTime create = TimeUtil.convertToUTC(createDateTime,myZoneId);
+                String createdBy = UsersImp.getUserLoggedIn();
+                int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
+                int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
+                int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
+
                 AppointmentImp.addAppointments(title,description,location,type,start,end,create,createdBy,customerId,userId,contactId);
                 Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
                 Scene cancelScene = new Scene(cancelParent);
@@ -236,10 +239,10 @@ public class ScheduleAddController implements Initializable {
                 cancelStage.show();
             }
             else {
-                System.out.println("Missing Values");
+                errorLabel.setText(bundle.getString("MissingValues"));
             }
         }catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
+            errorLabel.setText(e.getLocalizedMessage());
         }
     }
 }

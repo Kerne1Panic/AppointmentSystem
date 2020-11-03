@@ -79,13 +79,14 @@ public class LogInController implements Initializable {
                 //comparing the user names to the ones in the database, case sensitive.
                 if(user.getPassword().equals(usernamePassword.getText())){
                     //Displays a message if an appointment is within 15 minutes for the User.
-                    //Convert into UTC for comparison
+                    //Convert into user local time for comparison
                     for(Appointments appointments : AppointmentImp.getAllAppointments()){
                         if(user.getUserId() == appointments.getUserId()){
                             ZonedDateTime userZDT = ZonedDateTime.now();
-                            if(appointments.getStart().minusMinutes(15).isEqual(userZDT) || appointments.getStart().minusMinutes(15).isBefore(userZDT)){
+                            if((appointments.getStart().minusMinutes(15).isEqual(userZDT) || appointments.getStart().minusMinutes(15).isBefore(userZDT)) && !appointments.getStart().isBefore(userZDT)){
                                 //Alert message
-                                Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, "Test");
+                                Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("AppointmentWith")+ " " +appointments.getCustomerName()+ " " +bundle.getString("within15") + "\n" + appointments.getStart());
+                                appointmentSoon.showAndWait();
                             }
                         }
                     }

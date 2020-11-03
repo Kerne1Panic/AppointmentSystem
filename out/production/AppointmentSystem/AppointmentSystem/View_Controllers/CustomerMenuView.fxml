@@ -7,17 +7,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppointmentSystem.View_Controllers.CustomerMenuController">
+<AnchorPane prefHeight="412.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppointmentSystem.View_Controllers.CustomerMenuController">
    <children>
-      <TableView fx:id="customerTable" layoutX="39.0" layoutY="40.0" prefHeight="200.0" prefWidth="523.0">
+      <TableView fx:id="customerTable" layoutX="30.0" layoutY="41.0" prefHeight="200.0" prefWidth="658.0">
         <columns>
           <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID" />
           <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address" />
             <TableColumn fx:id="postalCol" prefWidth="75.0" text="Postal Code" />
             <TableColumn fx:id="phoneCol" prefWidth="75.0" text="Phone" />
-            <TableColumn fx:id="createdCol" prefWidth="75.0" text="Created" />
-            <TableColumn fx:id="updatedCol" prefWidth="75.0" text="Updated" />
+            <TableColumn fx:id="createdCol" prefWidth="90.0" text="Created" />
+            <TableColumn fx:id="updatedCol" prefWidth="82.0" text="Updated" />
+            <TableColumn fx:id="divisionCol" prefWidth="110.0" text="Division" />
         </columns>
       </TableView>
       <Label fx:id="titleLabel" alignment="CENTER" layoutX="187.0" prefHeight="29.0" prefWidth="227.0" text="Customer Menu">
@@ -29,5 +30,6 @@
       <Button fx:id="updateButton" layoutX="141.0" layoutY="257.0" mnemonicParsing="false" onAction="#updateCustomerButton" prefHeight="27.0" prefWidth="80.0" text="Update" />
       <Button fx:id="removeButton" layoutX="238.0" layoutY="257.0" mnemonicParsing="false" onAction="#removeCustomerButton" prefHeight="27.0" prefWidth="80.0" text="Remove" />
       <Button fx:id="cancelButton" layoutX="506.0" layoutY="359.0" mnemonicParsing="false" onAction="#cancelButton" prefHeight="27.0" prefWidth="80.0" text="Cancel" />
+      <Label fx:id="errorLabel" alignment="TOP_LEFT" layoutX="15.0" layoutY="297.0" prefHeight="98.0" prefWidth="479.0" />
    </children>
 </AnchorPane>

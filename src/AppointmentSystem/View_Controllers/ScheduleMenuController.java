@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -79,6 +80,9 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     private RadioButton monthlyRadio;
 
+    @FXML
+    private Label errorLabel;
+
     public ToggleGroup filterGroup;
 
     /**
@@ -127,6 +131,8 @@ public class ScheduleMenuController implements Initializable {
         this.weeklyRadio.setToggleGroup(filterGroup);
         //set Schedule Table
         appointmentTable.setItems(AppointmentImp.getAllAppointments());
+        //error label
+        errorLabel.setText("");
 
     }
 
@@ -151,12 +157,17 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     void removeButton(ActionEvent event)
     {
+        errorLabel.setText("");
         if(appointmentTable.getSelectionModel().getSelectedItem() != null){
             Appointments removeAppointment = appointmentTable.getSelectionModel().getSelectedItem();
-            AppointmentImp.deleteAppointments(removeAppointment.getAppointmentId());
-            appointmentTable.setItems(AppointmentImp.getAllAppointments());
+            Alert deleteAppointment = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("CancelAppointment")+ removeAppointment.getAppointmentId());
+            Optional<ButtonType> result = deleteAppointment.showAndWait();
+            if(result.get() == ButtonType.OK){
+                AppointmentImp.deleteAppointments(removeAppointment.getAppointmentId());
+                appointmentTable.setItems(AppointmentImp.getAllAppointments());
+            }
         }
-        else System.out.println("No Appointment Selected.");
+        else errorLabel.setText(bundle.getString("NothingSelected"));
     }
 
     /**
@@ -166,6 +177,7 @@ public class ScheduleMenuController implements Initializable {
     @FXML
     void updateButton(ActionEvent event) throws IOException
     {
+        errorLabel.setText("");
         if(appointmentTable.getSelectionModel().getSelectedItem() != null){
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleUpdateView.fxml"));
@@ -180,7 +192,7 @@ public class ScheduleMenuController implements Initializable {
             updateStage.show();
         }
         else {
-            System.out.println("No Appointment Selected. ");
+            errorLabel.setText(bundle.getString("NothingSelected"));
         }
     }
 

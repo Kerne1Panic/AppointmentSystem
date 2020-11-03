@@ -14,12 +14,13 @@ public class Customers {
     private String createdBy;
     private ZonedDateTime lastUpdate;
     private String lastUpdatedBy;
+    private String divisionName;
 
     //This is the Foreign key from the Division Table
     private int divisionId;
 
 
-    public Customers(int customerId, String customerName, String address, String postalCode, String phone, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
+    public Customers(int customerId, String customerName, String address, String postalCode, String phone, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy, int divisionId, String divisionName) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -30,6 +31,7 @@ public class Customers {
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
+        this.divisionName = divisionName;
     }
 
     public int getCustomerId() {
@@ -111,6 +113,14 @@ public class Customers {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
+    public String getDivisionName() {
+        return divisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+    }
+
     @Override
     public String toString(){
         return (customerName);

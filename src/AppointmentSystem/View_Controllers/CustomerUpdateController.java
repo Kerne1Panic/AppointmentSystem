@@ -90,6 +90,9 @@ public class CustomerUpdateController implements Initializable {
     @FXML
     private Label customerIdText;
 
+    @FXML
+    private Label errorLabel;
+
     private int customerID;
 
     /**
@@ -115,6 +118,8 @@ public class CustomerUpdateController implements Initializable {
         cancelButtonText.setText(bundle.getString("Cancel"));
         //After Selecting the Country a list of the Divisions for that country are allowed to be selected in Division combo box
         countryCombo.setItems(CountriesImp.getAllCountries());
+        //errorlabel
+        errorLabel.setText("");
     }
 
     /**
@@ -173,6 +178,7 @@ public class CustomerUpdateController implements Initializable {
      * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
      */
     public void CountryComboSelect(){
+        errorLabel.setText("");
         ObservableList<Divisions> divisionsList = DivisionsImp.getAllDivisions();
         ObservableList<Divisions> filteredDivisions = FXCollections.observableArrayList();
         if (countryCombo.getValue() != null){
@@ -229,15 +235,12 @@ public class CustomerUpdateController implements Initializable {
                     cancelStage.setScene(cancelScene);
                     cancelStage.show();
                 }
-                else{
-                    System.out.println("Country Division miss match");
-                }
             }
             else{
-                System.out.println("Missing values");
+                errorLabel.setText(bundle.getString("MissingValues"));
             }
         }catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
+            errorLabel.setText(e.getLocalizedMessage());
         }
     }
 }

@@ -30,5 +30,6 @@
         <Button fx:id="saveButtonText" layoutX="371.0" layoutY="360.0" mnemonicParsing="false" onAction="#saveButton" prefHeight="27.0" prefWidth="95.0" text="Save" />
         <Label fx:id="customerIdLabel" alignment="CENTER_RIGHT" layoutX="5.0" layoutY="255.0" prefHeight="17.0" prefWidth="95.0" text="Customer ID" />
         <Label fx:id="customerIdText" layoutX="115.0" layoutY="255.0" prefHeight="17.0" prefWidth="161.0" />
+      <Label fx:id="errorLabel" layoutX="14.0" layoutY="359.0" prefHeight="27.0" prefWidth="161.0" />
     </children>
 </AnchorPane>

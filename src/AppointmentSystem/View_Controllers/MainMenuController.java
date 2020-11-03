@@ -7,13 +7,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -72,10 +75,14 @@ public class MainMenuController implements Initializable {
     @FXML
     void exitButton(ActionEvent event) throws IOException
     {
-        Parent exitParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/LogInView.fxml"));
-        Scene exitScene = new Scene(exitParent);
-        Stage exitStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        exitStage.setScene(exitScene);
-        exitStage.show();
+        Alert exit = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("ExitApplication"));
+        Optional<ButtonType> result = exit.showAndWait();
+        if(result.get() == ButtonType.OK){
+            Parent exitParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/LogInView.fxml"));
+            Scene exitScene = new Scene(exitParent);
+            Stage exitStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            exitStage.setScene(exitScene);
+            exitStage.show();
+        }
     }
 }
