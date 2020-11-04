@@ -32,13 +32,13 @@
       <Button fx:id="updateButtonText" layoutX="129.0" layoutY="256.0" mnemonicParsing="false" onAction="#updateButton" prefHeight="27.0" prefWidth="95.0" text="Update" />
       <Button fx:id="removeButtonText" layoutX="233.0" layoutY="256.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="27.0" prefWidth="95.0" text="Remove" />
       <Button fx:id="cancelButtonText" layoutX="868.0" layoutY="357.0" mnemonicParsing="false" onAction="#cancelButton" prefHeight="27.0" prefWidth="95.0" text="cancel" />
-      <RadioButton fx:id="noFilterRadio" layoutX="700.0" layoutY="256.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="130.0" text="No filter">
+      <RadioButton fx:id="noFilterRadio" layoutX="700.0" layoutY="256.0" mnemonicParsing="false" onAction="#noFilterRadio" prefHeight="18.0" prefWidth="130.0" text="No filter">
          <font>
             <Font name="Arial" size="13.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="weeklyRadio" layoutX="400.0" layoutY="256.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="130.0" text="weekly" />
-      <RadioButton fx:id="monthlyRadio" layoutX="550.0" layoutY="256.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="130.0" text="monthly" />
+      <RadioButton fx:id="weeklyRadio" layoutX="400.0" layoutY="256.0" mnemonicParsing="false" onAction="#weeklyRadio" prefHeight="18.0" prefWidth="130.0" text="weekly" />
+      <RadioButton fx:id="monthlyRadio" layoutX="550.0" layoutY="256.0" mnemonicParsing="false" onAction="#monthlyRadio" prefHeight="18.0" prefWidth="130.0" text="monthly" />
       <Label fx:id="errorLabel" layoutX="23.0" layoutY="352.0" prefHeight="27.0" prefWidth="219.0" />
    </children>
 </AnchorPane>
