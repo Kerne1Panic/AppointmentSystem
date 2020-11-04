@@ -42,13 +42,13 @@ public class TimeUtil
      * @return
      */
     public static ObservableList<LocalTime> getTimes(LocalTime start, LocalTime end, int increment){
-        ObservableList<LocalTime>  openHours = FXCollections.observableArrayList();
+        ObservableList<LocalTime>  LocalTimeList = FXCollections.observableArrayList();
         if(start.isBefore(end)){
             while(start.isBefore(end)){
-                openHours.add(start);
+                LocalTimeList.add(start);
                 start = start.plusMinutes(increment);
             }
-            return openHours;
+            return LocalTimeList;
         }
         else return null;
     }

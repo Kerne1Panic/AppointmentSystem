@@ -27,8 +27,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * @author josealvarezpulido
@@ -303,19 +305,45 @@ public class ScheduleUpdateController implements Initializable {
                 LocalTime endTime = endCombo.getValue();
                 LocalDate dateEnd = endDate.getValue();
                 LocalDateTime updateTime = LocalDateTime.now();
-                LocalDateTime start = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
-                LocalDateTime end = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
+                LocalDateTime startAppointment = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
+                LocalDateTime endAppointment = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
                 LocalDateTime update = TimeUtil.convertToUTC(updateTime,myZoneId);
                 String updatedBy = UsersImp.getUserLoggedIn();
                 int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
                 int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
 
-                AppointmentImp.updateAppointments(title,description,location,type,start,end,update,updatedBy,customerId,userId,contactId,appointmentId);
-                Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
-                Scene cancelScene = new Scene(cancelParent);
-                Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                cancelStage.setScene(cancelScene);
-                cancelStage.show();
+
+                ZonedDateTime newStart = TimeUtil.convertBack(ZonedDateTime.of(startAppointment,ZoneId.of("UTC")));
+                ZonedDateTime newEnd = TimeUtil.convertBack(ZonedDateTime.of(endAppointment,ZoneId.of("UTC")));
+                /**
+                 * Stream used to create a idMatch list
+                 */
+                ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
+                List<Appointments> idMatchAppointments =allAppointments.stream()
+                        .filter(appointments -> appointments.getCustomerId() == customerId)
+                        .collect(Collectors.toList());
+                boolean appointmentOverlap = idMatchAppointments.stream()
+                        .anyMatch(old ->
+                        {
+                            return  ((old.getStart().isBefore(newStart)||old.getStart().isEqual(newStart))   &&  (old.getEnd().isAfter(newStart) || old.getEnd().isEqual(newStart)))
+                                    ||
+                                    ((old.getStart().isBefore(newEnd) || old.getStart().isEqual(newEnd))    &&  (old.getEnd().isAfter(newEnd) || old.getEnd().isEqual(newEnd)))
+                                    ||
+                                    ((old.getStart().isAfter(newStart) || old.getStart().isEqual(newStart)) &&  (old.getEnd().isBefore(newEnd) || old.getEnd().isEqual(newEnd)));
+                        });
+
+                if(appointmentOverlap){
+                    Alert overlap = new Alert(Alert.AlertType.INFORMATION, bundle.getString("Overlap"));
+                    overlap.showAndWait();
+                }
+                else{
+                    AppointmentImp.updateAppointments(title,description,location,type,startAppointment,endAppointment,update,updatedBy,customerId,userId,contactId,appointmentId);
+                    Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
+                    Scene cancelScene = new Scene(cancelParent);
+                    Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    cancelStage.setScene(cancelScene);
+                    cancelStage.show();
+                }
             }
             else {
                 errorLabel.setText(bundle.getString("MissingValues"));

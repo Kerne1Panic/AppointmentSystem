@@ -2,6 +2,7 @@ package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.LambdaInterfaces.LambdaAppointments;
 import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
@@ -80,15 +81,28 @@ public class LogInController implements Initializable {
                 if(user.getPassword().equals(usernamePassword.getText())){
                     //Displays a message if an appointment is within 15 minutes for the User.
                     //Convert into user local time for comparison
-                    for(Appointments appointments : AppointmentImp.getAllAppointments()){
-                        if(user.getUserId() == appointments.getUserId()){
-                            ZonedDateTime userZDT = ZonedDateTime.now();
-                            if((appointments.getStart().minusMinutes(15).isEqual(userZDT) || appointments.getStart().minusMinutes(15).isBefore(userZDT)) && !appointments.getStart().isBefore(userZDT)){
-                                //Alert message
-                                Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("AppointmentWith")+ " " +appointments.getCustomerName()+ " " +bundle.getString("within15") + "\n" + appointments.getStart());
-                                appointmentSoon.showAndWait();
+                    ZonedDateTime userZDT = ZonedDateTime.now();
+                    /**
+                     * Lambda Appointments
+                     */
+                    LambdaAppointments comingUp = (currentZDT) -> {
+                        for(Appointments appointments : AppointmentImp.getAllAppointments()){
+                            if((appointments.getStart().minusMinutes(15).isEqual(currentZDT) || appointments.getStart().minusMinutes(15).isBefore(currentZDT)) && !appointments.getStart().isBefore(currentZDT)){
+                                return appointments;
                             }
                         }
+                        return null;
+                    };
+                    if(comingUp.getAppointments(userZDT) !=null){
+                        Appointments appointments = comingUp.getAppointments(userZDT);
+                        //Alert message
+                        Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("AppointmentWith")+ " " +appointments.getAppointmentId()+ " " +bundle.getString("within15") + "\n" + appointments.getStart());
+                        appointmentSoon.showAndWait();
+                    }
+                    else {
+                        //Alert No appointments
+                        Alert noAppointments = new Alert(Alert.AlertType.INFORMATION, bundle.getString("NoAppointments"));
+                        noAppointments.showAndWait();
                     }
                     Parent mainMenuParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/MainMenuView.fxml"));
                     Scene mainMenuScene = new Scene(mainMenuParent);
@@ -108,7 +122,7 @@ public class LogInController implements Initializable {
                 alert.showAndWait();
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            e.getStackTrace();
         }
     }
 }

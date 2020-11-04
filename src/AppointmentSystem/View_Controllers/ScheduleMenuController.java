@@ -4,6 +4,7 @@ import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Customers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +18,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author josealvarezpulido
@@ -134,6 +139,21 @@ public class ScheduleMenuController implements Initializable {
         //error label
         errorLabel.setText("");
 
+    }
+
+    /**
+     *
+     * @param event
+     */
+    void noFilterRadio(ActionEvent event) {
+        errorLabel.setText("");
+        appointmentTable.setItems(AppointmentImp.getAllAppointments());
+    }
+    /**
+     *
+     */
+    void monthlyRadio(ActionEvent event){
+        ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
     }
 
     /**

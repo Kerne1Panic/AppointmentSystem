@@ -4,6 +4,7 @@ import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.ContactsImp;
 import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Contacts;
 import AppointmentSystem.Model.Customers;
 import AppointmentSystem.Model.Users;
@@ -23,8 +24,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author josealvarezpulido
@@ -223,20 +224,46 @@ public class ScheduleAddController implements Initializable {
                 LocalTime endTime = endCombo.getValue();
                 LocalDate dateEnd = endDate.getValue();
                 LocalDateTime  createDateTime = LocalDateTime.now();
-                LocalDateTime start = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
-                LocalDateTime end = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
+                LocalDateTime startAppointment = TimeUtil.convertToUTC(LocalDateTime.of(dateStart,startTime),myZoneId);
+                LocalDateTime endAppointment = TimeUtil.convertToUTC(LocalDateTime.of(dateEnd,endTime), myZoneId);
                 LocalDateTime create = TimeUtil.convertToUTC(createDateTime,myZoneId);
                 String createdBy = UsersImp.getUserLoggedIn();
                 int customerId = customerIDCombo.getSelectionModel().getSelectedItem().getCustomerId();
                 int userId = userCombo.getSelectionModel().getSelectedItem().getUserId();
                 int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
 
-                AppointmentImp.addAppointments(title,description,location,type,start,end,create,createdBy,customerId,userId,contactId);
-                Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
-                Scene cancelScene = new Scene(cancelParent);
-                Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                cancelStage.setScene(cancelScene);
-                cancelStage.show();
+                ZonedDateTime newStart = TimeUtil.convertBack(ZonedDateTime.of(startAppointment,ZoneId.of("UTC")));
+                ZonedDateTime newEnd = TimeUtil.convertBack(ZonedDateTime.of(endAppointment,ZoneId.of("UTC")));
+
+                /**
+                 * Stream used to create a idMatch list
+                 */
+                ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
+                List<Appointments> idMatchAppointments =allAppointments.stream()
+                        .filter(appointments -> appointments.getCustomerId() == customerId)
+                        .collect(Collectors.toList());
+                boolean appointmentOverlap = idMatchAppointments.stream()
+                        .anyMatch(old ->
+                        {
+                            return  ((old.getStart().isBefore(newStart)||old.getStart().isEqual(newStart))   &&  (old.getEnd().isAfter(newStart) || old.getEnd().isEqual(newStart)))
+                                    ||
+                                    ((old.getStart().isBefore(newEnd) || old.getStart().isEqual(newEnd))    &&  (old.getEnd().isAfter(newEnd) || old.getEnd().isEqual(newEnd)))
+                                    ||
+                                    ((old.getStart().isAfter(newStart) || old.getStart().isEqual(newStart)) &&  (old.getEnd().isBefore(newEnd) || old.getEnd().isEqual(newEnd)));
+                        });
+                if(appointmentOverlap){
+                    Alert overlap = new Alert(Alert.AlertType.INFORMATION, bundle.getString("Overlap"));
+                    overlap.showAndWait();
+                }
+                else {
+
+                    AppointmentImp.addAppointments(title,description,location,type,startAppointment,endAppointment,create,createdBy,customerId,userId,contactId);
+                    Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
+                    Scene cancelScene = new Scene(cancelParent);
+                    Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    cancelStage.setScene(cancelScene);
+                    cancelStage.show();
+                }
             }
             else {
                 errorLabel.setText(bundle.getString("MissingValues"));
