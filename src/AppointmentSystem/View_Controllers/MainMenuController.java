@@ -33,6 +33,9 @@ public class MainMenuController implements Initializable {
     private Button scheduleButton;
 
     @FXML
+    private Button reports;
+
+    @FXML
     private Button exitButton;
 
     @FXML
@@ -50,6 +53,7 @@ public class MainMenuController implements Initializable {
         titleLabel.setText(bundle.getString("MainMenu"));
         customerButton.setText(bundle.getString("Customer"));
         scheduleButton.setText(bundle.getString("Schedule"));
+        reports.setText(bundle.getString("Reports"));
         exitButton.setText(bundle.getString("Exit"));
 
     }
@@ -71,6 +75,15 @@ public class MainMenuController implements Initializable {
         Stage scheduleMenuStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scheduleMenuStage.setScene(scheduleMenuScene);
         scheduleMenuStage.show();
+    }
+    @FXML
+    void reportsViewButton(ActionEvent event)  throws IOException
+    {
+        Parent reportsParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ReportsView.fxml"));
+        Scene reportsScene = new Scene(reportsParent);
+        Stage reportsStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        reportsStage.setScene(reportsScene);
+        reportsStage.show();
     }
     @FXML
     void exitButton(ActionEvent event) throws IOException

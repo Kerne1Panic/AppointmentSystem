@@ -1,9 +1,10 @@
 package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.AppointmentImp;
-import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.Model.Appointments;
 import AppointmentSystem.Model.Customers;
+import AppointmentSystem.Utilities.TimeUtil;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,13 +19,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author josealvarezpulido
@@ -134,6 +133,7 @@ public class ScheduleMenuController implements Initializable {
         this.noFilterRadio.setToggleGroup(filterGroup);
         this.monthlyRadio.setToggleGroup(filterGroup);
         this.weeklyRadio.setToggleGroup(filterGroup);
+        noFilterRadio.setSelected(true);
         //set Schedule Table
         appointmentTable.setItems(AppointmentImp.getAllAppointments());
         //error label
@@ -145,15 +145,45 @@ public class ScheduleMenuController implements Initializable {
      *
      * @param event
      */
+    @FXML
     void noFilterRadio(ActionEvent event) {
+
         errorLabel.setText("");
         appointmentTable.setItems(AppointmentImp.getAllAppointments());
     }
+
     /**
      *
+     * @param event
      */
+    @FXML
     void monthlyRadio(ActionEvent event){
+        errorLabel.setText("");
         ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
+        for(Appointments appointments : allAppointments){
+           if(ChronoUnit.MONTHS.between(ZonedDateTime.now(), TimeUtil.convertBack(appointments.getStart()))< 1 && ChronoUnit.MONTHS.between(ZonedDateTime.now(), TimeUtil.convertBack(appointments.getStart())) >= 0){
+               filteredAppointments.add(appointments);
+           }
+       }
+       appointmentTable.setItems(filteredAppointments);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    @FXML
+    void weeklyRadio(ActionEvent event){
+        errorLabel.setText("");
+        ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
+        for(Appointments appointments : allAppointments){
+            if(ChronoUnit.WEEKS.between(ZonedDateTime.now(), TimeUtil.convertBack(appointments.getStart()))< 1 && ChronoUnit.WEEKS.between(ZonedDateTime.now(), TimeUtil.convertBack(appointments.getStart())) >= 0){
+                filteredAppointments.add(appointments);
+            }
+        }
+        appointmentTable.setItems(filteredAppointments);
     }
 
     /**
