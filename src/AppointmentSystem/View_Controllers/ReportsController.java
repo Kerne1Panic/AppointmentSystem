@@ -3,9 +3,6 @@ package AppointmentSystem.View_Controllers;
 import AppointmentSystem.DAOImp.AppointmentImp;
 import AppointmentSystem.DAOImp.TypesImp;
 import AppointmentSystem.Model.Appointments;
-import AppointmentSystem.Model.Types;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,14 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Month;
-import java.time.Year;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Controller for the ReportsView.fxml, used to implement action methods and initialize values for the Stage. Uses javafx library.
