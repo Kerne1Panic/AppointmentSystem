@@ -1,16 +1,10 @@
 package AppointmentSystem.View_Controllers;
 
-import AppointmentSystem.DAOImp.AppointmentImp;
-import AppointmentSystem.DAOImp.ContactsImp;
-import AppointmentSystem.DAOImp.CustomersImp;
-import AppointmentSystem.DAOImp.UsersImp;
+import AppointmentSystem.DAOImp.*;
 import AppointmentSystem.LambdaInterfaces.LambdaContacts;
 import AppointmentSystem.LambdaInterfaces.LambdaCustomers;
 import AppointmentSystem.LambdaInterfaces.LambdaUsers;
-import AppointmentSystem.Model.Appointments;
-import AppointmentSystem.Model.Contacts;
-import AppointmentSystem.Model.Customers;
-import AppointmentSystem.Model.Users;
+import AppointmentSystem.Model.*;
 import AppointmentSystem.Utilities.TimeUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,7 +61,7 @@ public class ScheduleUpdateController implements Initializable {
     private ComboBox<Contacts> contactCombo;
 
     @FXML
-    private ComboBox<String> typeCombo;
+    private ComboBox<Types> typeCombo;
 
     @FXML
     private Label startLabel;
@@ -151,7 +145,7 @@ public class ScheduleUpdateController implements Initializable {
         contactCombo.setItems(ContactsImp.getAllContacts());
         customerIDCombo.setItems(CustomersImp.getAllCustomers());
         userCombo.setItems(UsersImp.getAllUsers());
-        typeCombo.getItems().addAll("De-Briefing","Planning Session","Meeting","One-on-One","Training","On Boarding");
+        typeCombo.setItems(TypesImp.getAllTypes());
         //Initialize ComboTime box
         startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(8,0)),ZoneId.of("America/New_York"))).toLocalTime();
         endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(22, 0)),ZoneId.of("America/New_York"))).toLocalTime();
@@ -298,7 +292,7 @@ public class ScheduleUpdateController implements Initializable {
                     && startCombo.getValue() != null && startDate.getValue() != null && endCombo.getValue() != null && customerIDCombo.getValue() != null
                     && userCombo.getValue() != null && contactCombo.getValue() != null)
             {
-                String type = typeCombo.getValue();
+                Types type = typeCombo.getValue();
                 ZoneId myZoneId = ZoneId.systemDefault();
                 LocalTime startTime = startCombo.getValue();
                 LocalDate dateStart = startDate.getValue();
@@ -337,7 +331,7 @@ public class ScheduleUpdateController implements Initializable {
                     overlap.showAndWait();
                 }
                 else{
-                    AppointmentImp.updateAppointments(title,description,location,type,startAppointment,endAppointment,update,updatedBy,customerId,userId,contactId,appointmentId);
+                    AppointmentImp.updateAppointments(title,description,location,type.getTypeName(),startAppointment,endAppointment,update,updatedBy,customerId,userId,contactId,appointmentId);
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
                     Scene cancelScene = new Scene(cancelParent);
                     Stage cancelStage = (Stage)((Node)event.getSource()).getScene().getWindow();

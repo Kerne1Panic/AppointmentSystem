@@ -29,10 +29,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
+ * Controller for the CustomerAddView.fxml, used to implement action methods and initialize values for the stage. Uses javafx library.
  * @author josealvarezpulido
  */
 public class CustomerAddController implements Initializable {
-    //Resource Bundle used for changing languages
+    /**
+     * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
+     */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
     @FXML
@@ -84,7 +87,7 @@ public class CustomerAddController implements Initializable {
     private Label errorLabel;
 
     /**
-     *
+     * Initializes the default values and behaviours for the CustomerAddView.fxml file. uses resource bundle to initialize labels so they are in the appropriate language.
      * @param url
      * @param resourceBundle
      */
@@ -109,7 +112,7 @@ public class CustomerAddController implements Initializable {
         errorLabel.setText("");
     }
     /**
-     * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
+     * Filters the Division Combo box so that only Divisions that have the same country ID will be displayed.
      */
     public void CountryComboSelect(){
         errorLabel.setText("");
@@ -127,8 +130,8 @@ public class CustomerAddController implements Initializable {
         }
     }
     /**
-     * This method is used as an action event for the cancel button, changing the Scene of the Stage.
-     * @param event
+     * This method is used to navigate back to the CustomerMenuView.fxml, setting a new stage and showing it.
+     * @param event on User button ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML

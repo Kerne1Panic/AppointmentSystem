@@ -1,9 +1,11 @@
 package AppointmentSystem.View_Controllers;
 
 import AppointmentSystem.DAOImp.AppointmentImp;
+import AppointmentSystem.DAOImp.TypesImp;
 import AppointmentSystem.DAOImp.UsersImp;
 import AppointmentSystem.LambdaInterfaces.LambdaAppointments;
 import AppointmentSystem.Model.Appointments;
+import AppointmentSystem.Model.Types;
 import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.media.MediaException;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -59,6 +62,17 @@ public class LogInController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        Types type1 = new Types(0,"De-Briefing");
+        Types type2 = new Types(1,"Planning Session");
+        Types type3 = new Types(2,"Meeting");
+        Types type4 = new Types(3, "Training");
+        Types type5 = new Types(4,"On Boarding");
+        TypesImp.addTypes(type1);
+        TypesImp.addTypes(type2);
+        TypesImp.addTypes(type3);
+        TypesImp.addTypes(type4);
+        TypesImp.addTypes(type5);
+
         usernameLabel.setText(bundle.getString("Username")+":");
         passwordLabel.setText(bundle.getString("Password")+":");
         titleLabel.setText(bundle.getString("LoginScreen"));

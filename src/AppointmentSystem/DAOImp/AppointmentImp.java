@@ -59,7 +59,8 @@ public class AppointmentImp {
                 String userName = rs.getString("User_Name");
                 String contactName = rs.getString("Contact_Name");
 
-                Appointments appointmentsFound = new Appointments(appointmentId,title,description,location,type,start,end,createDate,createdBy,lastUpdate,lastUpdateBy,customerId,userId,contactId,customerName,userName,contactName);
+
+                Appointments appointmentsFound = new Appointments(appointmentId,title,description,location,TypesImp.getType(type),start,end,createDate,createdBy,lastUpdate,lastUpdateBy,customerId,userId,contactId,customerName,userName,contactName);
                 appointments.add(appointmentsFound);
             }
         }catch (Exception e){

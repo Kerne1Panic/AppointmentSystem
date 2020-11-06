@@ -8,7 +8,7 @@ public class Appointments {
     private String title;
     private String description;
     private String location;
-    private String type;
+    private Types type;
     private ZonedDateTime start;
     private ZonedDateTime end;
     private ZonedDateTime createDate;
@@ -23,7 +23,7 @@ public class Appointments {
     private String contactName;
 
 
-    public Appointments(int appointmentId, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy, int customerId, int userId, int contactId, String customerName, String userName, String contactName) {
+    public Appointments(int appointmentId, String title, String description, String location, Types type, ZonedDateTime start, ZonedDateTime end, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy, int customerId, int userId, int contactId, String customerName, String userName, String contactName) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -75,11 +75,11 @@ public class Appointments {
         this.location = location;
     }
 
-    public String getType() {
+    public Types getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Types type) {
         this.type = type;
     }
 
@@ -176,4 +176,5 @@ public class Appointments {
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
 }
