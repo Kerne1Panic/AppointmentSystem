@@ -7,7 +7,7 @@ import java.time.*;
 
 /**
  * @author josealvarezpulido
- * A utility class used to convert and create ZonedDateTime Objects. Usually used when extracting dates and times from SQL database.
+ * A utility class used to convert and create ZonedDateTime Objects used when extracting dates and times from SQL database.
  */
 public class TimeUtil
 {
@@ -36,10 +36,11 @@ public class TimeUtil
 
     /**
      * returns an observable list of LocalTime(s) incrementing by user selected increment in minutes from the start to end time, the end time must be one increment over the intended end time.
-     * @param start
-     * @param end
-     * @param increment
-     * @return
+     * Does not include the endTime in the list.
+     * @param start the startTime intended for the list.
+     * @param end the endTime intended for the list.
+     * @param increment the amount to increment in minutes.
+     * @return A LocalTime List with starting with and ending with (endTime - 1 increment)
      */
     public static ObservableList<LocalTime> getTimes(LocalTime start, LocalTime end, int increment){
         ObservableList<LocalTime>  LocalTimeList = FXCollections.observableArrayList();

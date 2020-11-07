@@ -3,7 +3,6 @@ package AppointmentSystem.Model;
 import java.time.ZonedDateTime;
 
 public class Appointments {
-    //Primary key for the Appointments table
     private int appointmentId;
     private String title;
     private String description;
@@ -15,9 +14,9 @@ public class Appointments {
     private String createdBy;
     private ZonedDateTime lastUpdate;
     private String lastUpdateBy;
-    private int customerId;  //Foreign Key
-    private int userId;    //Foreign Key
-    private int contactId;  //Foreign Key
+    private int customerId;
+    private int userId;
+    private int contactId;
     private String customerName;
     private String userName;
     private String contactName;
