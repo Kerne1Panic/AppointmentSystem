@@ -9,16 +9,30 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.*;
-
+/**
+ * @author josealvarezpulido
+ * Used to perform the Read operations with the data base of the Countries Class Model.
+ */
 public class CountriesImp {
-
+    /**
+     * List of all countries extracted from the database, it is set and returned in the getAllCountries static method.
+     */
     static ObservableList<Countries> countries = FXCollections.observableArrayList();
-
+    /**
+     * Read, the static method used to read the data from the database and create  Countries model object.
+     * @return ObservableList countries
+     */
     public static ObservableList<Countries> getAllCountries() {
+        /**
+         * sqlStatement is a string that contains the SQL statement that will be executed.
+         */
         final String sqlStatement = "SELECT * FROM countries";
         if(countries != null){
             countries.clear();
         }
+        /**
+         * try catch block used for exception handling.
+         */
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -45,17 +59,5 @@ public class CountriesImp {
         }
 
         return countries;
-    }
-
-    public void updateCountries() {
-
-    }
-
-    public void deleteCountries() {
-
-    }
-
-    public void addCountries() {
-
     }
 }

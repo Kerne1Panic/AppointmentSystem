@@ -9,16 +9,27 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.*;
-
+/**
+ * @author josealvarezpulido
+ * Used to perform the Read operations with the data base of the Divisions Class Model.
+ */
 public class DivisionsImp  {
-
+    /**
+     * List of all divisions extracted from the database, it is set and returned in the getAllDivisions static method.
+     */
     static ObservableList<Divisions> divisions = FXCollections.observableArrayList();
-
+    /**
+     * Read, the static method used to read the data from the database and create  Divisions model object.
+     * @return ObservableList divisions
+     */
     public static ObservableList<Divisions> getAllDivisions() {
         final String sqlStatement = "SELECT * FROM first_level_divisions";
         if(divisions != null){
             divisions.clear();
         }
+        /**
+         * try catch block used for exception handling.
+         */
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -46,17 +57,5 @@ public class DivisionsImp  {
         }
 
         return divisions;
-    }
-
-    public void updateDivisions() {
-
-    }
-
-    public void deleteDivisions() {
-
-    }
-
-    public void addDivisions() {
-
     }
 }

@@ -13,11 +13,13 @@ import java.time.*;
 
 /**
  * @author josealvarezpulido
- * Implements User Model  used to perform CRUD operations to the Database data.
+ * Used to perform the CRUD operations with the data base of the Users Class Model.
+ * Create Read Update Delete.
  */
 public class UsersImp {
-
-    //static attribute used to store the extracted and created Objects of the Users class.
+    /**
+     * List of all users extracted from the database, it is set and returned in the getAllUsers static method.
+     */
     static ObservableList<Users> users = FXCollections.observableArrayList();
     /**
      * userLoggedIn is set in the LogInView using the LogInController inside the LogIn actionEvent.
@@ -31,10 +33,19 @@ public class UsersImp {
      * @return users static attribute used to store the extracted and created Objects of the Users class.
      */
     public static ObservableList<Users> getAllUsers() {
+        /**
+         * sqlStatement is a string that contains the SQL statement that will be executed.
+         */
+        final String sqlStatement = "SELECT * FROM users";
+        /**
+         * used to clear the list if the list is not clear, this is because a possible error when reusing the static method causes the same list to be appended again.
+         */
         if(users != null){
             users.clear();
         }
-        final String sqlStatement = "SELECT * FROM users";
+        /**
+         * Try catch block used to catch SQL Exceptions, catching wrong sql statements so the app does not crash in that event.
+         */
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -54,7 +65,6 @@ public class UsersImp {
                 LocalDateTime last = rs.getTimestamp("Last_Update").toLocalDateTime();
                 ZonedDateTime lastUpdate = TimeUtil.convertBack(ZonedDateTime.of(last,ZoneId.of("UTC")));
                 String lastUpdatedBy = rs.getString("Last_Updated_By");
-
                 Users userFound = new Users(userId,user,password,createDate,createdBy,lastUpdate,lastUpdatedBy);
                 users.add(userFound);
 
@@ -90,7 +100,13 @@ public class UsersImp {
      */
     public static Users getUser(String username) throws SQLException {
         Users userFound;
+        /**
+         * sqlStatement is a string that contains the SQL statement that will be executed.
+         */
         final String sqlStatement = "SELECT * FROM users WHERE User_Name ='" + username + "'";
+        /**
+         * Try catch block used to catch SQL Exceptions, catching wrong sql statements so the app does not crash in that event.
+         */
         try{
             QueryUtil.setPreparedStatement(sqlStatement);
             PreparedStatement ps = QueryUtil.getPreparedStatement();
@@ -120,5 +136,4 @@ public class UsersImp {
         }
         return null;
     }
-
 }
