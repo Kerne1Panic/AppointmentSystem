@@ -100,8 +100,8 @@ public class ReportsController implements Initializable {
                             +"\t"+bundle.getString("Title")+":\t\t\t\t"+appointments.getTitle()+"\n"
                             +"\t"+bundle.getString("Type")+":\t\t\t\t"+appointments.getType().getTypeName()+"\n"
                             +"\t"+bundle.getString("Description")+":\t\t"+appointments.getDescription()+"\n"
-                            +"\t"+bundle.getString("Start")+" "+bundle.getString("DateAndTime")+":\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm").format(appointments.getStart())+"\n"
-                            +"\t"+bundle.getString("End")+" "+bundle.getString("DateAndTime")+":\t\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm").format(appointments.getEnd())+"\n"
+                            +"\t"+bundle.getString("Start")+" "+bundle.getString("DateAndTime")+":\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mma z").format(appointments.getStart())+"\n"
+                            +"\t"+bundle.getString("End")+" "+bundle.getString("DateAndTime")+":\t\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mma z").format(appointments.getEnd())+"\n"
                             +"\t"+bundle.getString("CustomerId")+":\t\t"
                             + appointments.getCustomerId()+"\n"
                             +"\n\n");

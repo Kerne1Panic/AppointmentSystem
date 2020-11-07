@@ -11,3 +11,13 @@ l' usager: admin:	Connecté avec succès	11/06/2020 - 06:17:14PM PST
 
 User: admin:	Logged in Successfully	11/06/2020 - 06:18:06PM PST
 
+User: admin:	Logged in Successfully	11/07/2020 - 10:43:21AM PST
+
+User: test:	Login Attempt Failed	11/07/2020 - 10:43:35AM PST
+
+User: test:	Logged in Successfully	11/07/2020 - 10:44:04AM PST
+
+User: jose:	Login Attempt Failed	11/07/2020 - 10:48:40AM PST
+
+User: jose:	Logged in Successfully	11/07/2020 - 10:48:41AM PST
+
