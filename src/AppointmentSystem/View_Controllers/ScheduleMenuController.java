@@ -113,7 +113,7 @@ public class ScheduleMenuController implements Initializable {
         appointmentIdCol.setText(bundle.getString("AppointmentId"));
         titleCol.setText(bundle.getString("Title"));
         descriptionCol.setText(bundle.getString("Description"));
-        customerIDCol.setText(bundle.getString("CustomerId"));
+        customerIDCol.setText(bundle.getString("CustomerName"));
         typeCol.setText(bundle.getString("Type"));
         startCol.setText(bundle.getString("Start"));
         endCol.setText(bundle.getString("End"));

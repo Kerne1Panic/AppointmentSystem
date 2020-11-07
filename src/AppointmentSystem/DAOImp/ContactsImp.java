@@ -40,16 +40,4 @@ public class ContactsImp {
         return contacts;
     }
 
-
-    public void updateContacts() {
-
-    }
-
-    public void deleteContacts() {
-
-    }
-
-    public void addContacts() {
-
-    }
 }

@@ -319,11 +319,13 @@ public class ScheduleUpdateController implements Initializable {
                 boolean appointmentOverlap = idMatchAppointments.stream()
                         .anyMatch(old ->
                         {
-                            return  ((old.getStart().isBefore(newStart)||old.getStart().isEqual(newStart))   &&  (old.getEnd().isAfter(newStart) || old.getEnd().isEqual(newStart)))
+                            return  (appointmentId != old.getAppointmentId())
+                                    &&
+                                    (((old.getStart().isBefore(newStart)||old.getStart().isEqual(newStart))   &&  (old.getEnd().isAfter(newStart) || old.getEnd().isEqual(newStart)))
                                     ||
                                     ((old.getStart().isBefore(newEnd) || old.getStart().isEqual(newEnd))    &&  (old.getEnd().isAfter(newEnd) || old.getEnd().isEqual(newEnd)))
                                     ||
-                                    ((old.getStart().isAfter(newStart) || old.getStart().isEqual(newStart)) &&  (old.getEnd().isBefore(newEnd) || old.getEnd().isEqual(newEnd)));
+                                    ((old.getStart().isAfter(newStart) || old.getStart().isEqual(newStart)) &&  (old.getEnd().isBefore(newEnd) || old.getEnd().isEqual(newEnd))));
                         });
 
                 if(appointmentOverlap){

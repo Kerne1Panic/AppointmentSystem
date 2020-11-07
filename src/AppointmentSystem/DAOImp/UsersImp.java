@@ -83,15 +83,6 @@ public class UsersImp {
     }
 
 
-
-    public static void updateUsers() {
-
-    }
-
-    public static void deleteUsers() {
-
-    }
-
     /**
      * Reads Data from the database using a PreparedStatement sqlStatement which contains a SELECT WHERE SQL command to retrieve a specific User_Name.
      * uses try catch block to handle a wrong SQL statement, here the statement is final, however in the event of retrieving data from user it would help catch user error.
@@ -130,10 +121,4 @@ public class UsersImp {
         return null;
     }
 
-    /**
-     * This method adds newUser to the users List.
-     * @param newUser is the User that is being added.
-     */
-    public void addUsers(Users newUser) {
-    }
 }

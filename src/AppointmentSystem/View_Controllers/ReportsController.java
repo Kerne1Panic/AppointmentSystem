@@ -1,9 +1,10 @@
 package AppointmentSystem.View_Controllers;
 
-import AppointmentSystem.DAOImp.AppointmentImp;
-import AppointmentSystem.DAOImp.TypesImp;
+import AppointmentSystem.DAOImp.*;
 import AppointmentSystem.Model.Appointments;
-import javafx.collections.ObservableList;
+import AppointmentSystem.Model.Contacts;
+import AppointmentSystem.Model.Customers;
+import AppointmentSystem.Model.Users;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -70,17 +72,17 @@ public class ReportsController implements Initializable {
 
     @FXML
     void appointmentsButton(ActionEvent event) {
+        reportField.setText("");
         int monthsInYear = 12;
-        ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
         int [][] typeAndMoth = new int[monthsInYear][TypesImp.getAllTypes().size()];
-        for(Appointments appointments: allAppointments){
+        for(Appointments appointments: AppointmentImp.getAllAppointments()){
             typeAndMoth[appointments.getStart().getMonth().getValue()][appointments.getType().getId()] ++;
         }
         for(int i = 0; i < monthsInYear; i++){
             for(int j = 0; j < TypesImp.getAllTypes().size(); j++)
             {
                 if(typeAndMoth[i][j] > 0){
-                    reportField.setText(typeAndMoth[i][j]+" "+TypesImp.getAllTypes().get(j).getTypeName()+" for "+Month.of(i)+"\n");
+                    reportField.appendText(typeAndMoth[i][j]+":\t"+TypesImp.getAllTypes().get(j).getTypeName()+" "+bundle.getString("For")+" "+Month.of(i)+"\n");
                 }
             }
         }
@@ -89,12 +91,35 @@ public class ReportsController implements Initializable {
 
     @FXML
     void contactScheduleButton(ActionEvent event) {
-
+        reportField.setText("");
+        for(Contacts contacts: ContactsImp.getAllContacts()){
+            for(Appointments appointments: AppointmentImp.getAllAppointments()){
+                if(appointments.getContactId() == contacts.getContactId()){
+                    reportField.appendText("Contact:\t"+contacts.getContactName()+ "\n"
+                            +"\t"+bundle.getString("AppointmentId")+":\t"+appointments.getAppointmentId()+"\n"
+                            +"\t"+bundle.getString("Title")+":\t\t\t\t"+appointments.getTitle()+"\n"
+                            +"\t"+bundle.getString("Type")+":\t\t\t\t"+appointments.getType().getTypeName()+"\n"
+                            +"\t"+bundle.getString("Description")+":\t\t"+appointments.getDescription()+"\n"
+                            +"\t"+bundle.getString("Start")+" "+bundle.getString("DateAndTime")+":\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm").format(appointments.getStart())+"\n"
+                            +"\t"+bundle.getString("End")+" "+bundle.getString("DateAndTime")+":\t\t"+ DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm").format(appointments.getEnd())+"\n"
+                            +"\t"+bundle.getString("CustomerId")+":\t\t"
+                            + appointments.getCustomerId()+"\n"
+                            +"\n\n");
+                }
+            }
+        }
     }
 
     @FXML
     void userCreatedButton(ActionEvent event) {
-
+        reportField.setText("");
+        for(Users users: UsersImp.getAllUsers()){
+            for(Customers customers: CustomersImp.getAllCustomers()){
+                if(customers.getCreatedBy().equals(users.getUserName())){
+                    reportField.appendText("\t"+ users.getUserName() +" "+bundle.getString("CreatedCustomer")+":\t" + customers.getCustomerName()+"\n");
+                }
+            }
+        }
     }
     /**
      * This method is used to navigate back to the MainMenuView.fxml, setting a new stage and showing it.

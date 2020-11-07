@@ -18,14 +18,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.media.MediaException;
 import javafx.stage.Stage;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -85,6 +87,10 @@ public class LogInController implements Initializable {
      * @param event when the enter button is pressed on either text field or password field executing the method.
      */
     public void logIn(ActionEvent event) throws IOException, SQLException {
+        FileWriter fwLoginActivity = new FileWriter("login_activity.txt",true);
+        PrintWriter pwLoginActivity = new PrintWriter(fwLoginActivity);
+
+        ZonedDateTime userZDT = ZonedDateTime.now();
         //try catch is used to prevent crashing based on human error.
         try{
             //Users Object created using the getUser(String sql) static function from a matched user in the database.
@@ -93,9 +99,11 @@ public class LogInController implements Initializable {
             if(user != null){
                 //comparing the user names to the ones in the database, case sensitive.
                 if(user.getPassword().equals(usernamePassword.getText())){
+                    pwLoginActivity.println(bundle.getString("User")+": "+user.getUserName()+":\t"+bundle.getString("LoginSuccess")+"\t"+DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm:ssa z").format(userZDT)+"\n");
+                    pwLoginActivity.close();
+
                     //Displays a message if an appointment is within 15 minutes for the User.
                     //Convert into user local time for comparison
-                    ZonedDateTime userZDT = ZonedDateTime.now();
                     /**
                      * Lambda Appointments
                      */
@@ -110,13 +118,14 @@ public class LogInController implements Initializable {
                     if(comingUp.getAppointments(userZDT) !=null){
                         Appointments appointments = comingUp.getAppointments(userZDT);
                         //Alert message
-                        Alert appointmentSoon = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("AppointmentWith")+ " " +appointments.getAppointmentId()+ " " +bundle.getString("within15") + "\n" + appointments.getStart());
+                        Alert appointmentSoon = new Alert(Alert.AlertType.INFORMATION, bundle.getString("AppointmentWith")+ " " +appointments.getAppointmentId()+ " " +bundle.getString("within15") + "\n" + appointments.getStart());
                         appointmentSoon.showAndWait();
                     }
                     else {
                         //Alert No appointments
                         Alert noAppointments = new Alert(Alert.AlertType.INFORMATION, bundle.getString("NoAppointments"));
                         noAppointments.showAndWait();
+
                     }
                     Parent mainMenuParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/MainMenuView.fxml"));
                     Scene mainMenuScene = new Scene(mainMenuParent);
@@ -129,6 +138,9 @@ public class LogInController implements Initializable {
                 else {
                     //alert displayed if no usernames are matched.
                     alert.showAndWait();
+                    pwLoginActivity.println(bundle.getString("User")+": "+user.getUserName()+":\t"+bundle.getString("LoginFailed")+"\t"+DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm:ssa z").format(userZDT)+"\n");
+                    pwLoginActivity.close();
+
                 }
             }
             else {
