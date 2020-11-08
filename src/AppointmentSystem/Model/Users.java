@@ -3,10 +3,9 @@ package AppointmentSystem.Model;
 import java.time.ZonedDateTime;
 
 public class Users {
-    //This is the primary key for this Table
-    private int userId;
 
-    private String userName; //Unique in SQL
+    private int userId;
+    private String userName;
     private String password;
     private ZonedDateTime createDate;
     private String createdBy;
@@ -23,9 +22,7 @@ public class Users {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -78,6 +75,10 @@ public class Users {
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
+    /**
+     * This method overrides the toString method used to set an Object to a string.
+     * @return userName.
+     */
     @Override
     public String toString(){
         return (userName);

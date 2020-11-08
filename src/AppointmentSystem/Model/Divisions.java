@@ -3,16 +3,13 @@ package AppointmentSystem.Model;
 import java.time.ZonedDateTime;
 
 public class Divisions {
-    //Primary Key for Division Table
-    private int divisionId;
 
+    private int divisionId;
     private String DivisionName;
     private ZonedDateTime createDate;
     private String createdBy;
     private ZonedDateTime lastUpdate;
     private String lastUpdatedBy;
-
-    //Foreign Key from the Country Table
     private int countryId;
 
     public Divisions(int divisionId, String divisionName, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdatedBy, int countryId) {
@@ -45,9 +42,7 @@ public class Divisions {
         return createDate;
     }
 
-    public void setCreateDate(ZonedDateTime createDate) {
-        this.createDate = createDate;
-    }
+    public void setCreateDate(ZonedDateTime createDate) { this.createDate = createDate; }
 
     public String getCreatedBy() {
         return createdBy;
@@ -80,6 +75,10 @@ public class Divisions {
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
+    /**
+     * This method overrides the toString method used to set an Object to a string.
+     * @return DivisionName.
+     */
     @Override
     public String toString(){
         return (DivisionName);

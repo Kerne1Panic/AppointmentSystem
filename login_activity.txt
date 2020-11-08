@@ -21,3 +21,5 @@ User: jose:	Login Attempt Failed	11/07/2020 - 10:48:40AM PST
 
 User: jose:	Logged in Successfully	11/07/2020 - 10:48:41AM PST
 
+User: admin:	Logged in Successfully	11/07/2020 - 04:14:20PM PST
+
