@@ -20,7 +20,7 @@ public class AppointmentSystemApp extends Application {
     /**
      * FXML resources are used to set the primary stage for the GUI application.
      * @param primaryStage
-     * @throws Exception
+     * @throws Exception for Wrongly typed resource.
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -31,7 +31,7 @@ public class AppointmentSystemApp extends Application {
 
     /**
      * Establishes connection with the database using the jdbc url, sets the Resource bundle to the supported language, Launch the GUI.
-     * Language support includes english and french.
+     * Language support includes English and French.
      * @param args
      * @throws SQLException
      */
@@ -41,9 +41,8 @@ public class AppointmentSystemApp extends Application {
         DBConnection.startConnection();
         //This line sets the default language to french so that the program does not need to restart to change the language.
         //Locale.setDefault(new Locale("fr"));
-        /*
-        Checking to see if Default language is supported. If the Default language is not supported the application closes.
-         */
+
+        //Checking to see if Default language is supported. If the Default language is not supported the application closes.
         if(!Locale.getDefault().getLanguage().equals("fr") && !Locale.getDefault().getLanguage().equals("en"))
         {
             System.out.println("Language pack not supported. Supported languages include 'en' and 'fr'\n");

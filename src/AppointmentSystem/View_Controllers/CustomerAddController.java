@@ -88,8 +88,6 @@ public class CustomerAddController implements Initializable {
 
     /**
      * Initializes the default values and behaviours for the CustomerAddView.fxml file. uses resource bundle to initialize labels so they are in the appropriate language.
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)

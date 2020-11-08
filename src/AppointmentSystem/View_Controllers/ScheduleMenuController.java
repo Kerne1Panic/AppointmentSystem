@@ -26,10 +26,13 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
+ * Controller for the ScheduleMenuView.fxml, used to implement action methods and initialize values for the stage. Uses javafx library.
  * @author josealvarezpulido
  */
 public class ScheduleMenuController implements Initializable {
-    //Resource Bundle used for changing languages
+    /**
+     * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
+     */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
     @FXML

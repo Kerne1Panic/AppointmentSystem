@@ -23,64 +23,93 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
+ * Controller for the CustomerMenuView.fxml, used to implement action methods and initialize values for the stage. Uses javafx library.
  * @author josealvarezpulido
- * Controller for the Customer menu view.
  */
 public class CustomerMenuController implements Initializable {
-    //Resource Bundle used for changing languages
+    /**
+     * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
+     */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat",Locale.getDefault());
-
+    /**
+     * Customer Table View.
+     */
     @FXML
     private TableView<Customers> customerTable;
-
+    /**
+     * customer ID  column in Customer  Table.
+     */
     @FXML
     private TableColumn<Customers, Integer> customerIdCol;
-
+    /**
+     * customer name column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers, String> nameCol;
-
+    /**
+     * customer address column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers, String> addressCol;
-
+    /**
+     * customer postal code column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers,String> postalCol;
-
+    /**
+     * customer phone column  in Customer Table.
+     */
     @FXML
     private TableColumn<Customers, String> phoneCol;
-
+    /**
+     * customer created date  column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers, ZonedDateTime> createdCol;
-
+    /**
+     * customer updated column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers,ZonedDateTime> updatedCol;
-
+    /**
+     * customer  division name column in Customer Table.
+     */
     @FXML
     private TableColumn<Customers,String> divisionCol;
-
+    /**
+     * customer title label.
+     */
     @FXML
     private Label titleLabel;
-
+    /**
+     * add button.
+     */
     @FXML
     private Button addButton;
-
+    /**
+     * update button.
+     */
     @FXML
     private Button updateButton;
-
+    /**
+     * remove button
+     */
     @FXML
     private Button removeButton;
-
+    /**
+     * cancel button
+     */
     @FXML
     private Button cancelButton;
-
+    /**
+     * error label.
+     */
     @FXML
     private Label errorLabel;
 
     /**
-     * initializes the labels, column names, and button text, sets Property values for the columns so that they could be receive the data from the database.
+     * Initializes the default values and behaviours for the CustomerMenuView.fxml file. uses resource bundle to initialize labels so they are in the appropriate language.
      * The Table is set using the CustomerImp Class' static method getAllCustomers which returns an observable list of the data from the database.
-     * @param url
-     * @param resourceBundle
-     *
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -116,7 +145,7 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * This method is used as an action event for the add customer button, changing the Scene of the Stage.
-     * @param event
+     * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML
@@ -130,9 +159,10 @@ public class CustomerMenuController implements Initializable {
     }
 
     /**
-     * This method removes customers from the database. On a delete cascade delete appointments.
-     * When deleting a customer, all appointments must be deleted first, due to foreign key constraints.
-     * @param event
+     * This method removes customers from the database.
+     * When deleting a customer, all appointments for the specific customer must be deleted first, due to foreign key constraints.
+     * Conformation message is  displayed to make sure user  intends to delete. Information Message is  displayed after  customer has been deleted.
+     * @param event ActionEvent
      */
     @FXML
     void removeCustomerButton(ActionEvent event)
@@ -143,6 +173,7 @@ public class CustomerMenuController implements Initializable {
             Customers customers = customerTable.getSelectionModel().getSelectedItem();
             String customerName = customers.getCustomerName();
             int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
+            //Alert Message before deleting customer.
             Alert deleteCustomer = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("DeleteCustomer")+ ": " +customerName);
             Optional<ButtonType> result = deleteCustomer.showAndWait();
             if(result.get() == ButtonType.OK){
@@ -151,12 +182,12 @@ public class CustomerMenuController implements Initializable {
                         AppointmentImp.deleteAppointments(appointments.getAppointmentId());
                     }
                 }
+                //Alert Message when customer has been deleted.
                 Alert customerDeleted = new Alert(Alert.AlertType.INFORMATION,customerName + " "+ bundle.getString("customerDeleted"));
                 CustomersImp.deleteCustomers(customerId);
                 customerDeleted.showAndWait();
                 //customer table, set by getAllCustomers. refreshes the Table.
                 customerTable.setItems(CustomersImp.getAllCustomers());
-
             }
         }
         else {
@@ -166,7 +197,8 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * This method is used as an action event for the add customer button, changing the Scene of the Stage.
-     * @param event
+     * Customer is sent to CustomerUpdateView.fxml using loader to load resources and  used the controller to send over the selected Item using a  method from the CustomerUpdateController.
+     * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML
@@ -189,12 +221,11 @@ public class CustomerMenuController implements Initializable {
         else{
             errorLabel.setText(bundle.getString("NothingSelected"));
         }
-
     }
 
     /**
      * This method is used as an action event for the cancel button, changing the Scene of the Stage.
-     * @param event
+     * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML

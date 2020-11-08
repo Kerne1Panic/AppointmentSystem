@@ -33,12 +33,14 @@ import java.util.ResourceBundle;
 
 /**
  * @author josealvarezpulido
- * Contoller for the login screen, the initial screen launched from the main method.
+ * Controller for the LogInView.fxml, used to implement action methods and initialize values for the stage. Uses javafx library.
  * Uses labels, text fields, and password fileds.
  * An alert message is created if the login credentials do not match the username and password from the database.
  */
 public class LogInController implements Initializable {
-    //Resource Bundle used for changing languages
+    /**
+     * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
+     */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
 
     @FXML
