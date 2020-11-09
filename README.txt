@@ -6,7 +6,7 @@ The user has the ability to add, update, delete customers and appointments, as w
 a schedule of upcoming appointments for a contact, and a list of users and customers the user has created.
 
 author: Jose Alvarez Pulido
-contact information: jalv177@wgu.edu
+contact information: jlalvarezpulido@gmail.com
 application version: 1.23
 11/09/2020
 
