@@ -37,52 +37,84 @@ public class CustomerAddController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * Customer Add Title label.
+     */
     @FXML
     private Label titleLabel;
-
+    /**
+     * Customer Add name label.
+     */
     @FXML
     private Label nameLabel;
-
+    /**
+     * Customer Add address label.
+     */
     @FXML
     private Label addressLabel;
-
+    /**
+     * Customer Add postal label.
+     */
     @FXML
     private Label postalLabel;
-
+    /**
+     * Customer Add phone label.
+     */
     @FXML
     private Label phoneLabel;
-
+    /**
+     * Customer Add name field.
+     */
     @FXML
     private TextField nameField;
-
+    /**
+     * Customer Add address field.
+     */
     @FXML
     private TextField addressField;
-
+    /**
+     * Customer Add postal field.
+     */
     @FXML
     private TextField postalField;
-
+    /**
+     * Customer Add phone field.
+     */
     @FXML
     private TextField phoneField;
-
+    /**
+     * Customer Add Countries comboBox.
+     */
     @FXML
     private ComboBox<Countries> countryCombo;
-
+    /**
+     * Customer Add Divisions comboBox.
+     */
     @FXML
     private ComboBox<Divisions> divisionCombo;
-
+    /**
+     * Customer Add countries label.
+     */
     @FXML
     private Label countryLabel;
-
+    /**
+     * Customer Add divisions label.
+     */
     @FXML
     private Label divisionLabel;
-
+    /**
+     * Customer Add cancel button.
+     */
     @FXML
     private Button cancelButtonText;
-
+    /**
+     * Customer Add save button.
+     */
     @FXML
     private Button saveButtonText;
-
+    /**
+     * Customer Add error label.
+     */
     @FXML
     private Label errorLabel;
 
@@ -110,11 +142,12 @@ public class CustomerAddController implements Initializable {
         errorLabel.setText("");
     }
     /**
-     * Filters the Division Combo box so that only Divisions that have the same country ID will be displayed.
+     * This method will set the Division comboBox, filters the Division Combo box so that only Divisions that have the same country ID will be displayed.
      */
     public void CountryComboSelect(){
         errorLabel.setText("");
         ObservableList<Divisions> divisionsList = DivisionsImp.getAllDivisions();
+        //List of the filtered divisions by country.
         ObservableList<Divisions> filteredDivisions = FXCollections.observableArrayList();
         if (countryCombo.getValue() != null){
             int countryId = countryCombo.getValue().getCountryId();
@@ -128,7 +161,7 @@ public class CustomerAddController implements Initializable {
         }
     }
     /**
-     * This method is used to navigate back to the CustomerMenuView.fxml, setting a new stage and showing it.
+     * Navigates back to the CustomerMenuView.fxml, setting a new stage and showing it.
      * @param event on User button ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
@@ -141,8 +174,10 @@ public class CustomerAddController implements Initializable {
         cancelStage.show();
     }
     /**
-     *
-     * @param event
+     * On action this method sets local variables to the values inputted to the form then goes through try catch and if statements
+     * to exception handle null and blank values, Then creates a customer using CustomersImp.addCustomer(values) which will add the customer to the
+     * database. observable list can be called using CustomersImp.getAllCustomers() to extract the customers from the database.
+     * @param event ActionEvent.
      */
     @FXML
     void saveButton(ActionEvent event) {
@@ -156,6 +191,7 @@ public class CustomerAddController implements Initializable {
                     int divisionId = divisionCombo.getValue().getDivisionId();
                     ZoneId myZoneId = ZoneId.systemDefault();
                     LocalDateTime create = LocalDateTime.now();
+                    //localDateTime in UTC
                     LocalDateTime createDate = TimeUtil.convertToUTC(create, myZoneId);
                     CustomersImp.addCustomers(name, address, postalCode, phone, createDate, divisionId);
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/CustomerMenuView.fxml"));

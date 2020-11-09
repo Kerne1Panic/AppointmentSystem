@@ -33,30 +33,39 @@ public class ReportsController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * Reports appointments button.
+     */
     @FXML
     private Button appointments;
-
+    /**
+     * Reports contact Schedule button.
+     */
     @FXML
     private Button contactSchedule;
-
+    /**
+     * Reports user's created by button.
+     */
     @FXML
     private Button userCreated;
-
+    /**
+     * Reports exit button.
+     */
     @FXML
     private Button exit;
-
-
+    /**
+     * Reports report field textArea.
+     */
     @FXML
     private TextArea reportField;
-
+    /**
+     * Reports title label.
+     */
     @FXML
     private Label reportsLabel;
 
     /**
-     * Initializes the default values and behaviours for the ReportsView.fxml file.
-     * @param url
-     * @param resourceBundle
+     * Initializes the default values and behaviours for the ReportsView.fxml file uses resource bundle to set the language.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,28 +79,37 @@ public class ReportsController implements Initializable {
 
     }
 
+    /**
+     * On action this method appends text (count type and month( to the reportField using a 2D array to store count of type of appointments by month,
+     * the 2D array typeAndMonth goes through 2 for loops to using the Type Id as an index for Type and month.getValue()-1 as index for month.
+     */
     @FXML
-    void appointmentsButton(ActionEvent event) {
-        reportField.setText("");
+    void appointmentsButton() {
+        reportField.setText("Appointment count by Type and Moth:\n");
         int monthsInYear = 12;
         int [][] typeAndMoth = new int[monthsInYear][TypesImp.getAllTypes().size()];
         for(Appointments appointments: AppointmentImp.getAllAppointments()){
-            typeAndMoth[appointments.getStart().getMonth().getValue()][appointments.getType().getId()] ++;
+            //since month values start with index 1, must subtract 1 to index properly in 2D array.
+            typeAndMoth[appointments.getStart().getMonth().getValue()-1][appointments.getType().getId()] ++;
         }
         for(int i = 0; i < monthsInYear; i++){
             for(int j = 0; j < TypesImp.getAllTypes().size(); j++)
             {
                 if(typeAndMoth[i][j] > 0){
-                    reportField.appendText(typeAndMoth[i][j]+":\t"+TypesImp.getAllTypes().get(j).getTypeName()+" "+bundle.getString("For")+" "+Month.of(i)+"\n");
+                    //since arrays start index at 0 to get the proper month must add 1 to the index i when getting month value.
+                    reportField.appendText(typeAndMoth[i][j]+":\t"+TypesImp.getAllTypes().get(j).getTypeName()+" "+bundle.getString("For")+" "+Month.of(i+1)+"\n");
                 }
             }
         }
     }
 
-
+    /**
+     * On action this method appends text to reportField a schedule for contacts including appointmentID, title, Type, Description, Start, End, CustomerID.
+     * Uses for loop to cycle through contacts then through appointments.
+     */
     @FXML
-    void contactScheduleButton(ActionEvent event) {
-        reportField.setText("");
+    void contactScheduleButton() {
+        reportField.setText("Schedule for Contacts:\n");
         for(Contacts contacts: ContactsImp.getAllContacts()){
             for(Appointments appointments: AppointmentImp.getAllAppointments()){
                 if(appointments.getContactId() == contacts.getContactId()){
@@ -110,9 +128,13 @@ public class ReportsController implements Initializable {
         }
     }
 
+    /**
+     * On action this method appends text to reportField of the Users and the Customers they have created, UserCreated is defined by the customer that is logged in.
+     * Uses a for loop to cycle through Users and then a for loop to cycle through Customers to get a match.
+     */
     @FXML
-    void userCreatedButton(ActionEvent event) {
-        reportField.setText("");
+    void userCreatedButton() {
+        reportField.setText("Users Created Customers:\n");
         for(Users users: UsersImp.getAllUsers()){
             for(Customers customers: CustomersImp.getAllCustomers()){
                 if(customers.getCreatedBy().equals(users.getUserName())){

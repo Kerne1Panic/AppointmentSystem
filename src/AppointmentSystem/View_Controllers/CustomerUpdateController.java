@@ -3,7 +3,6 @@ package AppointmentSystem.View_Controllers;
 import AppointmentSystem.DAOImp.CountriesImp;
 import AppointmentSystem.DAOImp.CustomersImp;
 import AppointmentSystem.DAOImp.DivisionsImp;
-import AppointmentSystem.DAOImp.UsersImp;
 import AppointmentSystem.LambdaInterfaces.LambdaCountry;
 import AppointmentSystem.LambdaInterfaces.LambdaDiv;
 import AppointmentSystem.Model.Countries;
@@ -41,67 +40,103 @@ public class CustomerUpdateController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * Customer Update title label.
+     */
     @FXML
     private Label titleLabel;
-
+    /**
+     * Customer Update name label.
+     */
     @FXML
     private Label nameLabel;
-
+    /**
+     * Customer Update address label.
+     */
     @FXML
     private Label addressLabel;
-
+    /**
+     * Customer Update postal label.
+     */
     @FXML
     private Label postalLabel;
-
+    /**
+     * Customer Update phone label.
+     */
     @FXML
     private Label phoneLabel;
-
+    /**
+     * Customer Update name field.
+     */
     @FXML
     private TextField nameField;
-
+    /**
+     * Customer Update address field.
+     */
     @FXML
     private TextField addressField;
-
+    /**
+     * Customer Update postal field.
+     */
     @FXML
     private TextField postalField;
-
+    /**
+     * Customer Update phone field.
+     */
     @FXML
     private TextField phoneField;
-
+    /**
+     * Customer Update Countries comboBox.
+     */
     @FXML
     private ComboBox<Countries> countryCombo;
-
+    /**
+     * Customer Update Divisions comboBox.
+     */
     @FXML
     private ComboBox<Divisions> divisionCombo;
-
+    /**
+     * Customer Update countries label.
+     */
     @FXML
     private Label countryLabel;
-
+    /**
+     * Customer Update divisions label.
+     */
     @FXML
     private Label divisionLabel;
-
+    /**
+     * Customer Update cancel button.
+     */
     @FXML
     private Button cancelButtonText;
-
+    /**
+     * Customer Update save button.
+     */
     @FXML
     private Button saveButtonText;
-
+    /**
+     * Customer Update customer ID label.
+     */
     @FXML
     private Label customerIdLabel;
-
+    /**
+     * Customer Update customer ID text label.
+     */
     @FXML
     private Label customerIdText;
-
+    /**
+     * Customer Update error label.
+     */
     @FXML
     private Label errorLabel;
-
+    /**
+     * customer Update customer ID.
+     */
     private int customerID;
 
     /**
-     *
-     * @param url
-     * @param resourceBundle
+     * Initializes the default values and behaviours for the CustomerUpdateView.fxml file. uses resource bundle to initialize labels so they are in the appropriate language.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -121,13 +156,17 @@ public class CustomerUpdateController implements Initializable {
         cancelButtonText.setText(bundle.getString("Cancel"));
         //After Selecting the Country a list of the Divisions for that country are allowed to be selected in Division combo box
         countryCombo.setItems(CountriesImp.getAllCountries());
-        //errorlabel
+        //error label
         errorLabel.setText("");
     }
 
     /**
-     *
-     * @param customers
+     * Passed Customer Object from CustomerMenuController.
+     * lambda discussion 1 LambdaDiv, this lambda is used to return an a Division Object which is needed to set the Division comboBox,
+     * a lambda is perfect for a situation where you need to create and use a method within a method, it is more efficient than creating a separate method just for code that will only be use in this instance.
+     * lambda discussion 2 LambdaCountry, this lambda is used to return an a Country Object which is needed to set the Country comboBox,
+     * a lambda is perfect for this situation for the same reasons that LambdaDiv was. No need to create a separate method for a method that will only be used in this instance.
+     * @param customers sets the Customer Update Form with values passed from the Customer Menu Table view Customer Selection.
      */
     public void CustomerSent(Customers customers) {
         customerID = customers.getCustomerId();
@@ -136,9 +175,7 @@ public class CustomerUpdateController implements Initializable {
         postalField.setText(customers.getPostalCode());
         phoneField.setText(customers.getPhone());
         customerIdText.setText(String.valueOf(customers.getCustomerId()));
-        /**
-         * LambdaDiv
-         */
+        //LambdaDiv Expression used to return a Division.
         LambdaDiv div = (divId)-> {
           for(Divisions division :  DivisionsImp.getAllDivisions()){
               if(division.getDivisionId() == divId){
@@ -147,11 +184,9 @@ public class CustomerUpdateController implements Initializable {
           }
           return null;
         };
-
+        //Instance of LambdaDiv used to create a Division object tempDiv.
         Divisions tempDiv = div.getDivision(customers.getDivisionId());
-        /**
-         * LambdaCountry
-         */
+        //LambdaCountry Expression used to return a Country.
         LambdaCountry country = (countryId) ->{
             for(Countries countries : CountriesImp.getAllCountries()){
                 if(countries.getCountryId()==countryId){
@@ -160,11 +195,12 @@ public class CustomerUpdateController implements Initializable {
             }
             return null;
         };
-
         if (tempDiv != null){
             ObservableList<Divisions> filteredDivisions = FXCollections.observableArrayList();
+            //Instance of LambdaCountry Expression used to create a Country object tempCountry
             Countries tempCountry = country.getCountry(tempDiv.getCountryId());
             if(tempCountry != null){
+                //Country and Division ComboBoxes are set.
                 countryCombo.setValue(tempCountry);
                 divisionCombo.setValue(tempDiv);
                 for(Divisions division : DivisionsImp.getAllDivisions()){
@@ -178,7 +214,7 @@ public class CustomerUpdateController implements Initializable {
     }
 
     /**
-     * Filters the Division Combo box so that only Divisions that have the same country code will be displayed.
+     * This method will set the Division comboBox, filters the Division Combo box so that only Divisions that have the same country code will be displayed.
      */
     public void CountryComboSelect(){
         errorLabel.setText("");
@@ -198,7 +234,7 @@ public class CustomerUpdateController implements Initializable {
 
     /**
      * This method is used as an action event for the cancel button, changing the Scene of the Stage.
-     * @param event
+     * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML
@@ -211,17 +247,18 @@ public class CustomerUpdateController implements Initializable {
         cancelStage.show();
     }
     /**
-     *
-     * @param event
+     * On action this method sets local variables to the values inputted to the form then goes through try catch and if statements
+     * to exception handle null and blank values, Then creates a customer using CustomersImp.updateCustomer(values) which will update the customer in the
+     * database. observable list can be called using CustomersImp.getAllCustomers() to extract the customers from the database.
+     * @param event ActionEvent.
      */
     @FXML
-    void saveButton(ActionEvent event) throws IOException {
+    void saveButton(ActionEvent event) {
         int customerId = customerID;
         String name = nameField.getText();
         String address = addressField.getText();
         String postalCode = postalField.getText();
         String phone = phoneField.getText();
-        String updatedBy = UsersImp.getUserLoggedIn();
         try{
             if(!nameField.getText().isBlank() && !addressField.getText().isBlank() && !postalField.getText().isBlank() && !phoneField.getText().isBlank() && divisionCombo.getValue() != null)
             {

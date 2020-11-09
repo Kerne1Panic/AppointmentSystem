@@ -77,7 +77,7 @@ public class CustomerMenuController implements Initializable {
     @FXML
     private TableColumn<Customers,String> divisionCol;
     /**
-     * customer title label.
+     * customer title menu label.
      */
     @FXML
     private Label titleLabel;
@@ -173,7 +173,9 @@ public class CustomerMenuController implements Initializable {
             Customers customers = customerTable.getSelectionModel().getSelectedItem();
             String customerName = customers.getCustomerName();
             int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
-            //Alert Message before deleting customer.
+            /**
+             * Alert Message when deleting customers.
+             */
             Alert deleteCustomer = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("DeleteCustomer")+ ": " +customerName);
             Optional<ButtonType> result = deleteCustomer.showAndWait();
             if(result.get() == ButtonType.OK){
@@ -182,7 +184,9 @@ public class CustomerMenuController implements Initializable {
                         AppointmentImp.deleteAppointments(appointments.getAppointmentId());
                     }
                 }
-                //Alert Message when customer has been deleted.
+                /**
+                 * Alert Message when the customer has been deleted.
+                 */
                 Alert customerDeleted = new Alert(Alert.AlertType.INFORMATION,customerName + " "+ bundle.getString("customerDeleted"));
                 CustomersImp.deleteCustomers(customerId);
                 customerDeleted.showAndWait();
@@ -196,7 +200,7 @@ public class CustomerMenuController implements Initializable {
     }
 
     /**
-     * This method is used as an action event for the add customer button, changing the Scene of the Stage.
+     * This method is used as an action event for the update customer button, changing the Scene of the Stage.
      * Customer is sent to CustomerUpdateView.fxml using loader to load resources and  used the controller to send over the selected Item using a  method from the CustomerUpdateController.
      * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.

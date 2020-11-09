@@ -42,30 +42,49 @@ public class LogInController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * Login locale Message set to the ZoneId of the User.
+     */
     @FXML
     private Label localeMessage;
+    /**
+     * Login username label.
+     */
     @FXML
     private Label usernameLabel;
+    /**
+     * Login password label.
+     */
     @FXML
     private Label passwordLabel;
+    /**
+     * Login title Label.
+     */
     @FXML
     private Label titleLabel;
+    /**
+     * Login username field.
+     */
     @FXML
-    private TextField usernameText;
+    private TextField usernameField;
+    /**
+     * Login password field.
+     */
     @FXML
-    private PasswordField usernamePassword;
-    //Alert message using keys from the resource bundle to translate the error message.
+    private PasswordField passwordField;
+    /**
+     * Alert used to inform User if the username or passwords don't match.
+     */
     Alert alert = new Alert(Alert.AlertType.ERROR, bundle.getString("WrongCredentials"));
 
     /**
      * Labels are initialized using a key from the resource bundle to translate them.
-     * @param url
-     * @param resourceBundle
+     * Initializes the Types used in the App.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        //Types initialized for the App
         Types type1 = new Types(0,"De-Briefing");
         Types type2 = new Types(1,"Planning Session");
         Types type3 = new Types(2,"Meeting");
@@ -76,19 +95,24 @@ public class LogInController implements Initializable {
         TypesImp.addTypes(type3);
         TypesImp.addTypes(type4);
         TypesImp.addTypes(type5);
-
+        //login labels
         usernameLabel.setText(bundle.getString("Username")+":");
         passwordLabel.setText(bundle.getString("Password")+":");
         titleLabel.setText(bundle.getString("LoginScreen"));
+        //sets locale message
         localeMessage.setText(String.valueOf(ZoneId.systemDefault()));
     }
     /**
      * The Username text is matched against the usernames in the database, if there is a match the passwords are compared.
      * A new stage is then set, changing the view to the Main menu.
      * A try catch is used to catch exceptions of wrong or null usernames typed by the user.
+     * lambda discussion, LambdaAppointments used to return an a Appointment Object which is needed to compare to the current LocalDateTime to display a message if an appointment is within 15 minutes of the current LocalDateTime,
+     * a lambda is perfect for a situation where you need to create and use a method within a method, it is more efficient than creating a separate method just for code that will only be use in this instance.
+     * Uses FileWriter and PrintWriter to keep a record of login attempts successful or not so long as the username matches a record in the database.
      * @param event when the enter button is pressed on either text field or password field executing the method.
      */
     public void logIn(ActionEvent event) throws IOException, SQLException {
+        //fileWriter and printerWriter declaration append is set to true.
         FileWriter fwLoginActivity = new FileWriter("login_activity.txt",true);
         PrintWriter pwLoginActivity = new PrintWriter(fwLoginActivity);
 
@@ -96,19 +120,17 @@ public class LogInController implements Initializable {
         //try catch is used to prevent crashing based on human error.
         try{
             //Users Object created using the getUser(String sql) static function from a matched user in the database.
-            Users user = UsersImp.getUser(usernameText.getText());
+            Users user = UsersImp.getUser(usernameField.getText());
             //not null user input check.
             if(user != null){
                 //comparing the user names to the ones in the database, case sensitive.
-                if(user.getPassword().equals(usernamePassword.getText())){
+                if(user.getPassword().equals(passwordField.getText())){
+                    //print writer used to write if a login was successful into login_activity.txt.
                     pwLoginActivity.println(bundle.getString("User")+": "+user.getUserName()+":\t"+bundle.getString("LoginSuccess")+"\t"+DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm:ssa z").format(userZDT)+"\n");
                     pwLoginActivity.close();
 
                     //Displays a message if an appointment is within 15 minutes for the User.
                     //Convert into user local time for comparison
-                    /**
-                     * Lambda Appointments
-                     */
                     LambdaAppointments comingUp = (currentZDT) -> {
                         for(Appointments appointments : AppointmentImp.getAllAppointments()){
                             if((appointments.getStart().minusMinutes(15).isEqual(currentZDT) || appointments.getStart().minusMinutes(15).isBefore(currentZDT)) && !appointments.getStart().isBefore(currentZDT)){
@@ -140,6 +162,7 @@ public class LogInController implements Initializable {
                 else {
                     //alert displayed if no usernames are matched.
                     alert.showAndWait();
+                    //print writer used to write if a login was not successful into login_activity.txt.
                     pwLoginActivity.println(bundle.getString("User")+": "+user.getUserName()+":\t"+bundle.getString("LoginFailed")+"\t"+DateTimeFormatter.ofPattern("MM/dd/yyyy - hh:mm:ssa z").format(userZDT)+"\n");
                     pwLoginActivity.close();
 

@@ -34,68 +34,110 @@ public class ScheduleMenuController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * Appointment menu Table View.
+     */
     @FXML
     private TableView<Appointments> appointmentTable;
-
+    /**
+     * Appointment menu contact column.
+     */
     @FXML
     private TableColumn<?, ?> contactCol;
-
+    /**
+     * Appointment menu appointment ID column.
+     */
     @FXML
     private TableColumn<?, ?> appointmentIdCol;
-
+    /**
+     * Appointment menu title column.
+     */
     @FXML
     private TableColumn<?, ?> titleCol;
-
+    /**
+     * Appointment menu title column.
+     */
     @FXML
     private TableColumn<?, ?> descriptionCol;
-
+    /**
+     * Appointment menu customer ID column.
+     */
     @FXML
     private TableColumn<Appointments, Customers> customerIDCol;
-
+    /**
+     * Appointment menu type column.
+     */
     @FXML
     private TableColumn<?, ?> typeCol;
-
+    /**
+     * Appointment menu start column.
+     */
     @FXML
     private TableColumn<?, ?> startCol;
+    /**
+     * Appointment menu end column.
+     */
     @FXML
     private TableColumn<?, ?> endCol;
+    /**
+     * Appointment menu location column.
+     */
     @FXML
     private TableColumn<?, ?> locationCol;
-
+    /**
+     * Appointment menu title label.
+     */
     @FXML
     private Label titleLabel;
-
+    /**
+     * Appointment menu add button.
+     */
     @FXML
     private Button addButtonText;
-
+    /**
+     * Appointment menu update button.
+     */
     @FXML
     private Button updateButtonText;
-
+    /**
+     * Appointment menu remove button.
+     */
     @FXML
     private Button removeButtonText;
-
+    /**
+     * Appointment menu cancel button.
+     */
     @FXML
     private Button cancelButtonText;
-
+    /**
+     * Appointment menu no filter radioButton.
+     */
     @FXML
     private RadioButton noFilterRadio;
-
+    /**
+     * Appointment menu weekly radioButton.
+     */
     @FXML
     private RadioButton weeklyRadio;
-
+    /**
+     * Appointment menu monthly radioButton.
+     */
     @FXML
     private RadioButton monthlyRadio;
-
+    /**
+     * Appointment menu error label.
+     */
     @FXML
     private Label errorLabel;
-
+    /**
+     * Appointment menu radioButton filter group.
+     */
     public ToggleGroup filterGroup;
 
     /**
-     *
-     * @param url
-     * @param resourceBundle
+     * Initializes the default values and behaviours for the ScheduleMenuView.fxml file, uses resource bundle to initialize labels, TableColumns,
+     * buttons so they are in the appropriate language.
+     * sets Cell Property value and sets the Items in the TableView.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -145,22 +187,20 @@ public class ScheduleMenuController implements Initializable {
     }
 
     /**
-     *
-     * @param event
+     * Controls the noFilter radio button which resets the TableView with no filters(all appointments).
      */
     @FXML
-    void noFilterRadio(ActionEvent event) {
+    void noFilterRadio() {
 
         errorLabel.setText("");
         appointmentTable.setItems(AppointmentImp.getAllAppointments());
     }
 
     /**
-     *
-     * @param event
+     * Controls the monthly radio Button, creates a filtered list of appointments set to the current month using ChronoUnit Months the list is then set to the appointments tableView.
      */
     @FXML
-    void monthlyRadio(ActionEvent event){
+    void monthlyRadio(){
         errorLabel.setText("");
         ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
         ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
@@ -173,11 +213,10 @@ public class ScheduleMenuController implements Initializable {
     }
 
     /**
-     *
-     * @param event
+     * Controls the weekly radio Button, creates a filtered list of appointments set to the current week using ChronoUnit Weeks the list is then set to the appointments tableView.
      */
     @FXML
-    void weeklyRadio(ActionEvent event){
+    void weeklyRadio(){
         errorLabel.setText("");
         ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
         ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
@@ -190,8 +229,9 @@ public class ScheduleMenuController implements Initializable {
     }
 
     /**
-     *
-     * @param event
+     * This method is used as an action event for the add button, changing the Scene of the Stage.
+     * @param event ActionEvent
+     * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML
     void addButton(ActionEvent event) throws IOException
@@ -204,8 +244,9 @@ public class ScheduleMenuController implements Initializable {
     }
 
     /**
-     *
-     * @param event
+     * This method removes Appointments from the database.
+     * Conformation message is  displayed to make sure user  intends to delete.
+     * @param event ActionEvent
      */
     @FXML
     void removeButton(ActionEvent event)
@@ -224,8 +265,10 @@ public class ScheduleMenuController implements Initializable {
     }
 
     /**
-     * This method is for Switching between Stages.
-     * @param event gets the Scene, sets the Scene, then shows it on the Stage.
+     * This method is used as an action event for the update appointment button, changing the Scene of the Stage.
+     * Appointment is sent to ScheduleUpdateView.fxml using loader to load resources and  used the controller to send over the selected Item using a method from the ScheduleAppointmentController.
+     * @param event ActionEvent
+     * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML
     void updateButton(ActionEvent event) throws IOException
@@ -251,7 +294,7 @@ public class ScheduleMenuController implements Initializable {
 
     /**
      * This method is used as an action event for the cancel button, changing the Scene of the Stage.
-     * @param event
+     * @param event ActionEvent
      * @throws IOException this is an exception handling technique that throws IOExceptions.
      */
     @FXML

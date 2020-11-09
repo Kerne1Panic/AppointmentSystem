@@ -30,89 +30,151 @@ public class ScheduleAddController implements Initializable {
      * a resource bundle that gets the default Locale and the location of the resource bundle used for translation purposes.
      */
     ResourceBundle bundle = ResourceBundle.getBundle("AppointmentSystem/ResourceBundle/Nat", Locale.getDefault());
-
+    /**
+     * appointment add title of View form label.
+     */
     @FXML
     private Label titleViewLabel;
-
+    /**
+     * appointment add title label.
+     */
     @FXML
     private Label titleLabel;
-
+    /**
+     * appointment add description label.
+     */
     @FXML
     private Label descriptionLabel;
-
+    /**
+     * appointment add contact label.
+     */
     @FXML
     private Label contactLabel;
-
+    /**
+     * appointment add location label.
+     */
     @FXML
     private Label locationLabel;
-
+    /**
+     * appointment add type label.
+     */
     @FXML
     private Label typeLabel;
-
+    /**
+     * appointment add contacts comboBox.
+     */
     @FXML
     private ComboBox<Contacts> contactCombo;
-
+    /**
+     * appointment add type comboBox.
+     */
     @FXML
     private ComboBox<Types> typeCombo;
-
+    /**
+     * appointment add start label.
+     */
     @FXML
     private Label startLabel;
-
+    /**
+     * appointment add start comboBox.
+     */
     @FXML
     private ComboBox<LocalTime> startCombo;
-
+    /**
+     * appointment add start datePicker.
+     */
     @FXML
     private DatePicker startDate;
-
+    /**
+     * appointment add end label.
+     */
     @FXML
     private Label endLabel;
-
+    /**
+     * appointment add end comboBox.
+     */
     @FXML
     private ComboBox<LocalTime> endCombo;
-
+    /**
+     * appointment add end datePicker.
+     */
     @FXML
     private DatePicker endDate;
-
+    /**
+     * appointment add title field.
+     */
     @FXML
     private TextField titleField;
-
+    /**
+     * appointment add description field.
+     */
     @FXML
     private TextField descriptionField;
-
+    /**
+     * appointment add location field.
+     */
     @FXML
     private TextField locationField;
-
+    /**
+     * appointment add customer ID label.
+     */
     @FXML
     private Label customerIDLabel;
-
+    /**
+     * appointment add customer ID comboBox.
+     */
     @FXML
     private ComboBox<Customers> customerIDCombo;
-
+    /**
+     * appointment add user label.
+     */
     @FXML
     private Label userLabel;
-
+    /**
+     * appointment add user comboBox.
+     */
     @FXML
     private ComboBox<Users> userCombo;
-
+    /**
+     * appointment add save button.
+     */
     @FXML
     private Button saveButtonText;
-
+    /**
+     * appointment add cancel button.
+     */
     @FXML
     private Button cancelButtonText;
-
+    /**
+     * appointment add error label.
+     */
     @FXML
     private Label errorLabel;
-
-
+    /**
+     * Observable list of hours the Offices are open (8:00 am - 10:00pm EST), the list will contain
+     * these times in increments of 15 minutes in the detected local time.
+     */
     ObservableList<LocalTime> hoursOpen = FXCollections.observableArrayList();
+    /**
+     * The opening time of the Offices(8:00am EST).
+     */
     LocalTime startTimes;
+    /**
+     * The closing time of the Offices(10:00pm EST).
+     */
     LocalTime endTimes;
+    /**
+     * The amount each value will be incremented in the list.
+     */
     int incrementMin;
+    /**
+     * Appointment add max length of an appointment.
+     */
+    int maxLength;
 
     /**
-     *
-     * @param url
-     * @param resourceBundle
+     * initialize the buttons and labels in this method to use the resource bundle to change language,
+     * as well as comboBoxes and start/end times.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -142,26 +204,26 @@ public class ScheduleAddController implements Initializable {
         startTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(8,0)),ZoneId.of("America/New_York"))).toLocalTime();
         endTimes = TimeUtil.convertBack(ZonedDateTime.of(LocalDateTime.of(LocalDate.now(),LocalTime.of(22, 0)),ZoneId.of("America/New_York"))).toLocalTime();
         incrementMin = 15;
+        maxLength = 2;
         hoursOpen = TimeUtil.getTimes(startTimes,endTimes,incrementMin);
         startCombo.setItems(hoursOpen);
-        endCombo.setPromptText("Select Start hours");
         //errorLabel
         errorLabel.setText("");
 
     }
 
     /**
-     *
+     * action method ,on action this method creates a filtered list in local time for the end of the appointment, the list is dependent on the chosen start time.
+     * The maximum length of an appointment is set to 2 hours, could be changed using maxLength variable.
+     * assert exception handling a possible null value.
      */
     public void startTimeCombo()
     {
         errorLabel.setText("");
         if(startCombo.getValue() != null){
-            ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(2).plusMinutes(incrementMin),incrementMin);
+            ObservableList<LocalTime> endAppointment = TimeUtil.getTimes(startCombo.getValue(),startCombo.getValue().plusHours(maxLength).plusMinutes(incrementMin),incrementMin);
             ObservableList<LocalTime> filterEndAppointment = FXCollections.observableArrayList();
-            /**
-             * assert Exception handling.
-             */
+            //exception handling.
             assert endAppointment != null;
             for(LocalTime time : endAppointment){
                 if(time.isBefore(endTimes.plusMinutes(incrementMin)) && time.isAfter(startCombo.getValue())){
@@ -173,7 +235,8 @@ public class ScheduleAddController implements Initializable {
     }
 
     /**
-     *
+     * action method for the start date picker, on action this method sets the end date picker.
+     * This is assuming that appointments must end the same day they are started.
      */
     public void startDatePicker()
     {
@@ -199,8 +262,13 @@ public class ScheduleAddController implements Initializable {
     }
 
     /**
-     *
-     * @param event
+     * On action this method sets local variables to the values inputted to the form saving them as appointments in the database
+     * then goes through try catch exception handling as well as if statement to handle possible null values.
+     * Stream used to create a idMatch list.
+     * Stream used to determine appointment overlap using anyMatch.
+     * lambda discussion, Lambda in boolean appointment overlap is used as a predicate
+     * to return a boolean, a lambda is necessary with streams using functional programing methods.
+     * @param event ActionEvent
      */
     @FXML
     void saveButton(ActionEvent event)
@@ -231,14 +299,12 @@ public class ScheduleAddController implements Initializable {
 
                 ZonedDateTime newStart = TimeUtil.convertBack(ZonedDateTime.of(startAppointment,ZoneId.of("UTC")));
                 ZonedDateTime newEnd = TimeUtil.convertBack(ZonedDateTime.of(endAppointment,ZoneId.of("UTC")));
-
-                /**
-                 * Stream used to create a idMatch list
-                 */
+                //Stream used to create a List of idMatched for a customer's appointments
                 ObservableList<Appointments> allAppointments = AppointmentImp.getAllAppointments();
                 List<Appointments> idMatchAppointments =allAppointments.stream()
                         .filter(appointments -> appointments.getCustomerId() == customerId)
                         .collect(Collectors.toList());
+                //Stream used to find if appointments are overlapped for a customer based on ID.
                 boolean appointmentOverlap = idMatchAppointments.stream()
                         .anyMatch(old ->
                         {
@@ -249,11 +315,11 @@ public class ScheduleAddController implements Initializable {
                                     ((old.getStart().isAfter(newStart) || old.getStart().isEqual(newStart)) &&  (old.getEnd().isBefore(newEnd) || old.getEnd().isEqual(newEnd)));
                         });
                 if(appointmentOverlap){
+                    //Alert conflicting appointments.
                     Alert overlap = new Alert(Alert.AlertType.INFORMATION, bundle.getString("Overlap"));
                     overlap.showAndWait();
                 }
                 else {
-
                     AppointmentImp.addAppointments(title,description,location,type.getTypeName(),startAppointment,endAppointment,create,createdBy,customerId,userId,contactId);
                     Parent cancelParent = FXMLLoader.load(getClass().getResource("/AppointmentSystem/View_Controllers/ScheduleMenuView.fxml"));
                     Scene cancelScene = new Scene(cancelParent);
