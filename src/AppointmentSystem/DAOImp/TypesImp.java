@@ -24,7 +24,7 @@ public class TypesImp {
 
     /**
      * adds Objects of the class Type to the allTypes List.
-     * @param types
+     * @param types types that will be added to allTypes
      */
     public static void addTypes(Types types){
 

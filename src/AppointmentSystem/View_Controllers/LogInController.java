@@ -110,6 +110,8 @@ public class LogInController implements Initializable {
      * a lambda is perfect for a situation where you need to create and use a method within a method, it is more efficient than creating a separate method just for code that will only be use in this instance.
      * Uses FileWriter and PrintWriter to keep a record of login attempts successful or not so long as the username matches a record in the database.
      * @param event when the enter button is pressed on either text field or password field executing the method.
+     * @throws SQLException exception handling.
+     * @throws IOException exception handling used to prevent errors.
      */
     public void logIn(ActionEvent event) throws IOException, SQLException {
         //fileWriter and printerWriter declaration append is set to true.

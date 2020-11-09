@@ -96,7 +96,9 @@ public class UsersImp {
     /**
      * Reads Data from the database using a PreparedStatement sqlStatement which contains a SELECT WHERE SQL command to retrieve a specific User_Name.
      * uses try catch block to handle a wrong SQL statement, here the statement is final, however in the event of retrieving data from user it would help catch user error.
+     * @param username username used to find the User from database.
      * @return userFound local attribute used to store the extract and create the matching User_Name into a Object of the Users class.
+     * @throws SQLException used to throw SQL exceptions that may cause errors.
      */
     public static Users getUser(String username) throws SQLException {
         Users userFound;

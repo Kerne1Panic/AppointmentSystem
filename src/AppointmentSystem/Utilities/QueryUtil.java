@@ -18,6 +18,7 @@ public class QueryUtil {
     /**
      * This method creates a statement using a static attribute connect created in DBConnection Class, and a SQLQuery String to input the define the commands set to be executed.
      * Using throws SQLExceptions for exception handling.
+     * @param SQLQuery the sql statement used to create a prepared statement.
      * @throws SQLException to handle exceptions if a sql string is invalid.
      */
     public static void setPreparedStatement(String SQLQuery) throws SQLException {

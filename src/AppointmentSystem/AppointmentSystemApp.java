@@ -19,7 +19,7 @@ import static java.lang.System.exit;
 public class AppointmentSystemApp extends Application {
     /**
      * FXML resources are used to set the primary stage for the GUI application.
-     * @param primaryStage
+     * @param primaryStage primaryStage
      * @throws Exception for Wrongly typed resource.
      */
     @Override
@@ -32,10 +32,9 @@ public class AppointmentSystemApp extends Application {
     /**
      * Establishes connection with the database using the jdbc url, sets the Resource bundle to the supported language, Launch the GUI.
      * Language support includes English and French.
-     * @param args
-     * @throws SQLException
+     * @param args args
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         //Static function establishes the jdbc connection using the url, user name and password.
         DBConnection.startConnection();

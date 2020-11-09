@@ -136,7 +136,7 @@ public class AppointmentImp {
 
     /**
      * Delete ,static method used to delete appointments using a SQL delete statement.
-     * @param appointmentId
+     * @param appointmentId used to Delete appointment.
      */
     public static void deleteAppointments(int appointmentId) {
         /**
